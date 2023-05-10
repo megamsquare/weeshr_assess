@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:4
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+
+
+  server:
+    build: .
+    ports:
+      - '3001:3001'
+    depends_on:
+      - mongo
+    environment:
+      - PORT=${PORT}
+      - MONGO_URL=${MONGO_URL}
+    volumes:
+      - .env:/usr/src/app/.env
