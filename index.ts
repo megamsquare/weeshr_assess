@@ -3,9 +3,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 import helmet from 'helmet';
 import rate_limit from 'express-rate-limit';
+// Database
+import db from './src/db/mongo_db/connect_mongo'
 
 
 const port = process.env.HTTP_PORT || 3001;
+const mongo_db = process.env.MONGO_URL || 'mongodb://localhost:27017/test'
 
 const app = express();
 
@@ -31,6 +34,7 @@ app.get('/', (req, res) => {
 
 async function start() {
     try {
+        await db(mongo_db)
         app.listen(port, () => {
             console.log(`Server is listening to port: ${port}...`);
         })
