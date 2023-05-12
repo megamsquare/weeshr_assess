@@ -1,0 +1,127 @@
+<mxfile host="app.diagrams.net" modified="2023-04-19T15:58:55.414Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="N0Tq6lgq6CXQOTPiNu-2" version="21.2.0" type="device">
+  <diagram name="Page-1" id="s_cu0kreHTZsWct6u9xP">
+    <mxGraphModel dx="1242" dy="1896" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-1" value="Wallet Service" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="180" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="h4G5aF2Vr8Qcr4TcPMRE-2" target="h4G5aF2Vr8Qcr4TcPMRE-26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-28" value="If success change state to complete" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="h4G5aF2Vr8Qcr4TcPMRE-27">
+          <mxGeometry x="-0.0364" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-2" value="Transaction Servicvce" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="290" y="170" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-3" value="Wallet DB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="110" y="300" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-4" value="Trans DB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="335" y="300" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-5" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;exitX=0.4;exitY=-0.05;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.592;entryY=1.05;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="h4G5aF2Vr8Qcr4TcPMRE-3" target="h4G5aF2Vr8Qcr4TcPMRE-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="430" as="sourcePoint" />
+            <mxPoint x="650" y="380" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-6" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.608;entryY=1.05;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="h4G5aF2Vr8Qcr4TcPMRE-4" target="h4G5aF2Vr8Qcr4TcPMRE-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="430" as="sourcePoint" />
+            <mxPoint x="650" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-7" value="API GATEWAY" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="-300" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-8" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="h4G5aF2Vr8Qcr4TcPMRE-1" target="h4G5aF2Vr8Qcr4TcPMRE-16">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="100" as="sourcePoint" />
+            <mxPoint x="290" y="-10" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-9" value="Get wallet iNFOR by User ID" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="h4G5aF2Vr8Qcr4TcPMRE-8">
+          <mxGeometry x="-0.2451" y="-1" relative="1" as="geometry">
+            <mxPoint x="-26" y="-11" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-12" value="Trigger API for transfer" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="730" y="-10" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="h4G5aF2Vr8Qcr4TcPMRE-13" target="h4G5aF2Vr8Qcr4TcPMRE-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-13" value="Check wallet balance if sufficience" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="305" y="-130" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-14" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;exitX=0.45;exitY=-0.05;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="h4G5aF2Vr8Qcr4TcPMRE-13" target="h4G5aF2Vr8Qcr4TcPMRE-7">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="100" as="sourcePoint" />
+            <mxPoint x="650" y="50" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-15" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;entryX=0.308;entryY=1.038;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="h4G5aF2Vr8Qcr4TcPMRE-16" target="h4G5aF2Vr8Qcr4TcPMRE-13">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="100" as="sourcePoint" />
+            <mxPoint x="650" y="50" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-16" value="Yes, Updated wallet" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="210" y="-20" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-20" value="if nor sufficient, return error 400" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="100" y="-130" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-22" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.417;entryY=-0.017;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="h4G5aF2Vr8Qcr4TcPMRE-16" target="h4G5aF2Vr8Qcr4TcPMRE-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="70" as="sourcePoint" />
+            <mxPoint x="650" y="20" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-23" value="Save transaction info with started state" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="h4G5aF2Vr8Qcr4TcPMRE-22">
+          <mxGeometry x="0.0105" y="1" relative="1" as="geometry">
+            <mxPoint x="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-31" value="Text" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="h4G5aF2Vr8Qcr4TcPMRE-22">
+          <mxGeometry x="-0.2797" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-32" value="QUEUE for transaction" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="h4G5aF2Vr8Qcr4TcPMRE-22">
+          <mxGeometry x="-0.7613" y="2" relative="1" as="geometry">
+            <mxPoint y="8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-25" value="If successful&amp;nbsp; change state to INprogress" style="endArrow=classic;startArrow=classic;html=1;rounded=0;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="h4G5aF2Vr8Qcr4TcPMRE-2" target="h4G5aF2Vr8Qcr4TcPMRE-12">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="70" as="sourcePoint" />
+            <mxPoint x="650" y="20" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-26" value="If transaction is successful&amp;nbsp;" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="900" y="160" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-29" value="Email Service" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="690" y="260" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-30" value="Event triggered for complete state transaction" style="endArrow=classic;html=1;rounded=0;exitX=1.025;exitY=0.867;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.017;entryY=0.633;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="h4G5aF2Vr8Qcr4TcPMRE-2" target="h4G5aF2Vr8Qcr4TcPMRE-29">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="50" as="sourcePoint" />
+            <mxPoint x="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="h4G5aF2Vr8Qcr4TcPMRE-33" value="&lt;h1&gt;Event Triggered&lt;/h1&gt;&lt;p&gt;check transaction status.&lt;/p&gt;&lt;p&gt;failtransaction&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="920" y="-20" width="190" height="120" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
