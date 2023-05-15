@@ -20,5 +20,8 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
     "validator": "^13.9.0"
+  },
+  "devDependencies": {
+    "@types/validator": "^13.7.17"
   }
 }
