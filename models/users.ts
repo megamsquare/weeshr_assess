@@ -64,12 +64,9 @@ UserSchema.method('create_jwt', async function (is_refresh) {
     }
 });
 
-// if (!is_refresh.check) {
-//     const payload = {
-//         userId: this._id,
-//         };
-//     const jwt_options = {
-//         expiresIn: process.env.JWT_EXPIRES_IN
-//         };
-//     jwtoken = jwt.sign(payload, process.env.JWT_SECRET_KEY, jwt_options);
-//     } else {}
+const User = mongoose.model(
+    'users',
+    UserSchema
+);
+
+export default User;
