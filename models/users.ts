@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const UserSchema = new mongoose.Schema({
     firstName: {
@@ -38,7 +39,37 @@ UserSchema.pre('save', async function () {
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-UserSchema.method('comparePassword', async function (inputPassword) {
-    const isMatch = await bcrypt.compare(inputPassword, this.password);
+UserSchema.method('compare_password', async function (input_password) {
+    const isMatch = await bcrypt.compare(input_password, this.password);
     return isMatch;
 });
+
+UserSchema.method('create_jwt', async function (is_refresh) {
+    let jwtoken = '';
+    let jwt_key = process.env.JWT_SECRET_KEY || ''
+    if (!is_refresh.check) {
+        jwtoken = jwt.sign(
+            { userId: this._id },
+            jwt_key,
+            { expiresIn: process.env.JWT_EXPIRES_IN }
+        );
+        return jwtoken
+    } else {
+        jwtoken = jwt.sign(
+            { userId: this._id,username: this.username, refresh: is_refresh.refreshToken },
+            jwt_key,
+            { expiresIn: process.env.REFRESH_JWT_EXPIRES_IN }
+        );
+        return jwtoken
+    }
+});
+
+// if (!is_refresh.check) {
+//     const payload = {
+//         userId: this._id,
+//         };
+//     const jwt_options = {
+//         expiresIn: process.env.JWT_EXPIRES_IN
+//         };
+//     jwtoken = jwt.sign(payload, process.env.JWT_SECRET_KEY, jwt_options);
+//     } else {}
