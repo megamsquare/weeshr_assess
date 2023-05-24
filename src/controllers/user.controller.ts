@@ -25,3 +25,9 @@ async function sign_up(req: Request, res: Response) {
         res.status(status_code.BAD_REQUEST).json({ message: error })
        }
 }
+
+const User_controller = {
+    sign_up,
+};
+
+export default User_controller;
