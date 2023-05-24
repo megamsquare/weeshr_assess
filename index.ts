@@ -29,6 +29,7 @@ app.use(express.json());
 
 app.use(helmet());
 
+// Routers
 app.get('/api', routers)
 
 async function start() {
