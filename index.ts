@@ -4,7 +4,8 @@ dotenv.config();
 import helmet from 'helmet';
 import rate_limit from 'express-rate-limit';
 // Database
-import db from './src/db/mongo_db/connect_mongo'
+import db from './src/db/mongo_db/connect_mongo';
+import routers from './src/routes';
 
 
 const port = process.env.HTTP_PORT || 3001;
@@ -28,9 +29,7 @@ app.use(express.json());
 
 app.use(helmet());
 
-app.get('/', (req, res) => {
-    res.send('Yesssssssss Hello')
-})
+app.get('/api', routers)
 
 async function start() {
     try {
