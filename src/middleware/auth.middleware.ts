@@ -29,4 +29,14 @@ function verify_token(req: UserRequest, res: Response, next: NextFunction) {
     }
 }
 
-function verify_permission(roles: string[]) {}
+function verify_permission(roles: string[] = []) {
+    return (req: UserRequest, res: Response, next: NextFunction) => {
+        const user_role = req.user?.role || [];
+        const has_permission = roles.some(role => user_role.includes(role))
+        if (!has_permission) {
+            res.status(status_code.UNAUTHORIZED).json({ message: Err.UnauthorizedRoute });
+            return;
+        }
+        next();
+    };
+}
