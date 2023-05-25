@@ -7,6 +7,8 @@ import rate_limit from 'express-rate-limit';
 import db from './src/db/mongo_db/connect_mongo';
 import routers from './src/routes';
 
+import not_found from './src/middleware/not_found.middleware';
+
 
 const port = process.env.HTTP_PORT || 3001;
 const mongo_db = process.env.MONGO_URL || 'mongodb://localhost:27017/test'
@@ -30,7 +32,8 @@ app.use(express.json());
 app.use(helmet());
 
 // Routers
-app.get('/api', routers)
+app.use('/api', routers)
+app.use(not_found)
 
 async function start() {
     try {
