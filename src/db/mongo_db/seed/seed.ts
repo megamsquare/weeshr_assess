@@ -15,6 +15,16 @@ const SeedData = async () => {
             isEmailVerified: true
         }
 
+        const email_exist = await user_model.exists({ email: save_user.email })
+        if (email_exist) {
+            return
+        }
+
+        const username_exist = await user_model.exists({ email: save_user.username })
+        if (username_exist) {
+            return
+        }
+
         const user = await user_model.create({...save_user});
 
         const save_role = {

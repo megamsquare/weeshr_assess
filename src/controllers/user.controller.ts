@@ -5,10 +5,21 @@ import Err from "../use_cases/error_handler";
 
 async function sign_up(req: Request, res: Response) {
        try {
-        let account_details: any;
 
         const user_model = Model.User;
         const role_model = Model.Roles;
+        
+        const email_exist = await user_model.exists({ email: req.body.email })
+        if (email_exist) {
+            res.status(status_code.BAD_REQUEST).json({ message: 'Email is already taken' })
+            return
+        }
+
+        const username_exist = await user_model.exists({ username: req.body.username })
+        if (username_exist) {
+            res.status(status_code.BAD_REQUEST).json({ message: 'Username is already taken' })
+            return
+        }
     
         const user = await user_model.create({ ...req.body })
 
