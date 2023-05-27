@@ -44,6 +44,19 @@ async function sign_in(req:Request, res: Response) {
         res.status(status_code.BAD_REQUEST).json({ message: Err.ProvideLoginDetails });
         return;
     }
+
+    try {
+        const user_model = Model.User;
+        const role_model = Model.Roles;
+        
+        const user = await user_model.findOne({ email });
+        if (!user) {
+            res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidEmail });
+            return;
+        }
+    } catch (error) {
+        
+    }
 }
 
 const User_controller = {
