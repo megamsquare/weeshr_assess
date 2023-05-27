@@ -37,6 +37,10 @@ async function sign_up(req: Request, res: Response) {
        }
 }
 
+async function sign_in(req:Request, res: Response) {
+    
+}
+
 const User_controller = {
     sign_up,
 };
