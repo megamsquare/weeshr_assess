@@ -38,7 +38,12 @@ async function sign_up(req: Request, res: Response) {
 }
 
 async function sign_in(req:Request, res: Response) {
-    
+    const { email, password } = req.body;
+
+    if (!email || password) {
+        res.status(status_code.BAD_REQUEST).json({ message: Err.ProvideLoginDetails });
+        return;
+    }
 }
 
 const User_controller = {
