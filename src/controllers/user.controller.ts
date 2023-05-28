@@ -54,6 +54,8 @@ async function sign_in(req:Request, res: Response) {
             res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidEmail });
             return;
         }
+
+        // const is_password = await user.compare_password(password);
     } catch (error) {
         
     }

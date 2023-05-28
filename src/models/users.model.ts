@@ -3,6 +3,17 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+interface IUser extends mongoose.Document {
+    firstName: string;
+    lastName: string;
+    email: string;
+    username: string;
+    password: string;
+    isEmailVerified: boolean;
+    compare_password(input_password: string): Promise<boolean>;
+    create_jwt(is_refresh: { check: boolean; refreshToken: string }): Promise<string>;
+}
+
 const UserSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -68,7 +79,7 @@ UserSchema.method('create_jwt', async function (is_refresh) {
     }
 });
 
-const User = mongoose.model(
+const User = mongoose.model<IUser>(
     'users',
     UserSchema
 );
