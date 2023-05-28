@@ -17,7 +17,6 @@ services:
     volumes:
       - ./data:/data/db
 
-
   server:
     build: .
     ports:
@@ -30,6 +29,13 @@ services:
       - MONGO_URL=${MONGO_URL}
     volumes:
       - .env:/usr/src/app/.env
+  
+  docker:
+    image: docker:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: >
+      sh -c "docker image prune -f && docker volume prune -f"
 
 volumes:
   redis-data:
