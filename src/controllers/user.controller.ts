@@ -38,9 +38,9 @@ async function sign_up(req: Request, res: Response) {
 }
 
 async function sign_in(req:Request, res: Response) {
-    const { email, password } = req.body;
+    const { usernameOrEmail, password } = req.body;
 
-    if (!email || password) {
+    if (!usernameOrEmail || password) {
         res.status(status_code.BAD_REQUEST).json({ message: Err.ProvideLoginDetails });
         return;
     }
@@ -49,13 +49,16 @@ async function sign_in(req:Request, res: Response) {
         const user_model = Model.User;
         const role_model = Model.Roles;
         
-        const user = await user_model.findOne({ email });
+        const user = await user_model.findOne({
+            $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }]
+        });
         if (!user) {
-            res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidEmail });
+            console.log()
+            res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidUsernameOrEmail });
             return;
         }
 
-        // const is_password = await user.compare_password(password);
+        const is_password = await user.compare_password(password);
     } catch (error) {
         
     }

@@ -5,7 +5,7 @@ const Err = {
     EmailExists: 'Email already exists',
     UsernameExists: 'Username already exists',
     ProvideLoginDetails: 'Please provide email and password',
-    InvalidEmail: 'Invalid Email',
+    InvalidUsernameOrEmail: 'Invalid Username or Email',
     InvalidPassword: 'Invalid Password',
     UserDoesNotExists: 'User Does Not Exists',
     NoUserAccount: 'User Does Not Have Account',
