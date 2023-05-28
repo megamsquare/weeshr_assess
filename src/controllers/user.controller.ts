@@ -52,13 +52,17 @@ async function sign_in(req:Request, res: Response) {
         const user = await user_model.findOne({
             $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }]
         });
+
         if (!user) {
-            console.log()
             res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidUsernameOrEmail });
             return;
         }
 
         const is_password = await user.compare_password(password);
+        if (!is_password) {
+            res.status(status_code.BAD_REQUEST).json({ mesaage: Err.IncorrectPassword });
+            return
+        }
     } catch (error) {
         
     }
