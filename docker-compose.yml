@@ -1,6 +1,14 @@
 version: '3'
 
 services:
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
   mongo:
     image: mongo:4
     restart: always
@@ -16,8 +24,12 @@ services:
       - '3001:3001'
     depends_on:
       - mongo
+      - redis
     environment:
       - PORT=${HTTP_PORT}
       - MONGO_URL=${MONGO_URL}
     volumes:
       - .env:/usr/src/app/.env
+
+volumes:
+  redis-data:
