@@ -44,7 +44,7 @@ async function sign_in(req:Request, res: Response) {
         check: false,
         refreshToken: ""
     }
-    let isToken;
+    let existing_token;
 
     if (!usernameOrEmail || password) {
         res.status(status_code.BAD_REQUEST).json({ message: Err.ProvideLoginDetails });
@@ -74,7 +74,9 @@ async function sign_in(req:Request, res: Response) {
         const refresh_cache = await DB.caching.redis_client.get(user.username);
 
         if (refresh_cache) {
-            
+            existing_token = JSON.parse(refresh_cache);
+        } else {
+            // existing_token = await 
         }
 
     } catch (error) {
