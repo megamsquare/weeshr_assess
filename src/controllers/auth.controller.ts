@@ -69,6 +69,7 @@ async function sign_in(req:Request, res: Response) {
 
 const Auth_controller = {
     sign_up,
+    sign_in,
 };
 
 export default Auth_controller;
