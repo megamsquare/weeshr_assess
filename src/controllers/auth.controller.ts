@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import status_code from "http-status";
 import Model from "../models";
 import Err from "../use_cases/error_handler";
+import DB from "../db";
 
 async function sign_up(req: Request, res: Response) {
        try {
@@ -39,6 +40,11 @@ async function sign_up(req: Request, res: Response) {
 
 async function sign_in(req:Request, res: Response) {
     const { usernameOrEmail, password } = req.body;
+    const isRefresh = {
+        check: false,
+        refreshToken: ""
+    }
+    let isToken;
 
     if (!usernameOrEmail || password) {
         res.status(status_code.BAD_REQUEST).json({ message: Err.ProvideLoginDetails });
@@ -62,14 +68,33 @@ async function sign_in(req:Request, res: Response) {
             res.status(status_code.BAD_REQUEST).json({ mesaage: Err.IncorrectPassword });
             return
         }
+
+        const access_token = await user.create_jwt(isRefresh);
+
+        const refresh_cache = await DB.caching.redis_client.get(user.username);
+
+        if (refresh_cache) {
+            
+        }
+
     } catch (error) {
         
     }
 }
 
+async function refresh_token(req:Request, res: Response) {
+    
+}
+
+async function forgot_password(req:Request, res: Response) {
+    
+}
+
 const Auth_controller = {
     sign_up,
     sign_in,
+    refresh_token,
+    forgot_password,
 };
 
 export default Auth_controller;
