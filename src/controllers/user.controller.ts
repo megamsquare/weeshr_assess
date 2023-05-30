@@ -47,7 +47,6 @@ async function sign_in(req:Request, res: Response) {
 
     try {
         const user_model = Model.User;
-        const role_model = Model.Roles;
         
         const user = await user_model.findOne({
             $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }]
