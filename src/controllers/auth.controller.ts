@@ -31,7 +31,7 @@ async function sign_up(req: Request, res: Response) {
 
         const role = await role_model.create({ ...save_role })
 
-        res.status(status_code.CREATED).json({ data: {user, role: role.role}})
+        res.status(status_code.CREATED).json({ data: { message: 'User created successfully' }})
 
        } catch (error) {
         res.status(status_code.BAD_REQUEST).json({ message: error })
