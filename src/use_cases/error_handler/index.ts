@@ -13,6 +13,7 @@ const Err = {
     InsufficientBalance: 'Your balance is insufficient for this transaction',
     RefreshTokenExists: 'Refresh Token Does Not Exist',
     RefreshTokenInvalid: 'Refresh Token is Invalid',
+    InvalidToken: 'Your token is not valid',
 }
 
 export default Err;

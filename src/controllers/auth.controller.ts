@@ -44,7 +44,7 @@ async function sign_in(req:Request, res: Response) {
         check: false,
         refreshToken: ""
     }
-    let existing_token;
+    let existingToken;
     const tokens = Model.Tokens;
     let isCache = true;
 
@@ -76,14 +76,34 @@ async function sign_in(req:Request, res: Response) {
         const refresh_cache = await DB.caching.redis_client.get(user.username);
 
         if (refresh_cache) {
-            existing_token = JSON.parse(refresh_cache);
+            existingToken = JSON.parse(refresh_cache);
         } else {
-            existing_token = await tokens.findOne({ userId: user._id });
+            existingToken = await tokens.findOne({ userId: user._id });
             isCache = false;
         }
 
-        if (existing_token && !isCache) {
-            await DB.caching.redis_client.set()
+        if (existingToken) {
+            if (!isCache) {
+                await DB.caching.redis_client.set(user.username, JSON.stringify(existingToken), {
+                    EX: 60 * 60 * 24,
+                    NX: true
+                });
+            }
+
+            if (!existingToken.isValid) {
+                res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidToken });
+                return;
+            }
+
+            isRefresh.check = true;
+            isRefresh.refreshToken = existingToken.refreshToken;
+            const refreshJWT = await user.create_jwt(isRefresh);
+            res.status(status_code.OK).json({
+                access_token,
+                refresh_token: refreshJWT,
+                data: { firstName: user.firstName, lastName: user.lastName }
+            })
+            return;
         }
 
     } catch (error) {
