@@ -4,7 +4,7 @@ import Model from "../models";
 import Err from "../use_cases/error_handler";
 import DB from "../db";
 
-async function sign_up(req: Request, res: Response) {
+async function createUser(req: Request, res: Response) {
        try {
 
         const user_model = Model.User;
@@ -38,52 +38,27 @@ async function sign_up(req: Request, res: Response) {
        }
 }
 
-async function sign_in(req:Request, res: Response) {
-    const { usernameOrEmail, password } = req.body;
-    const isRefresh = {
-        check: false,
-        refreshToken: ""
-    }
-    let isToken;
+async function updateUser(req:Request, res: Response) {
 
-    if (!usernameOrEmail || password) {
-        res.status(status_code.BAD_REQUEST).json({ message: Err.ProvideLoginDetails });
-        return;
-    }
+}
 
-    try {
-        const user_model = Model.User;
-        
-        const user = await user_model.findOne({
-            $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }]
-        });
+async function getUserById(req:Request, res: Response) {
+    
+}
 
-        if (!user) {
-            res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidUsernameOrEmail });
-            return;
-        }
+async function getAllUser(req:Request, res: Response) {
+    
+}
 
-        const is_password = await user.compare_password(password);
-        if (!is_password) {
-            res.status(status_code.BAD_REQUEST).json({ mesaage: Err.IncorrectPassword });
-            return
-        }
+async function getUserByUsername(req:Request, res: Response) {
+    
+}
 
-        const access_token = await user.create_jwt(isRefresh);
-
-        const refresh_cache = await DB.caching.redis_client.get(user.username);
-
-        if (refresh_cache) {
-            
-        }
-
-    } catch (error) {
-        
-    }
+async function getUserByEmail(req:Request, res: Response) {
+    
 }
 
 const User_controller = {
-    sign_up,
 };
 
 export default User_controller;
