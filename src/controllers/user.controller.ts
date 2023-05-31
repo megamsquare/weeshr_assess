@@ -31,7 +31,14 @@ async function createUser(req: Request, res: Response) {
 
         const role = await role_model.create({ ...save_role })
 
-        res.status(status_code.CREATED).json({ data: {user, role: role.role}})
+        const userDetails = {
+            name: `${user.firstName} ${user.lastName}`,
+            username: user.username,
+            email: user.email,
+            role: role.role
+        }
+
+        res.status(status_code.CREATED).json({ data: {user: userDetails}})
 
        } catch (error) {
         res.status(status_code.BAD_REQUEST).json({ message: error })
