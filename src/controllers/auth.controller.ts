@@ -3,6 +3,7 @@ import status_code from "http-status";
 import Model from "../models";
 import Err from "../use_cases/error_handler";
 import DB from "../db";
+import crypto from "crypto";
 
 async function sign_up(req: Request, res: Response) {
        try {
@@ -104,6 +105,17 @@ async function sign_in(req:Request, res: Response) {
                 data: { firstName: user.firstName, lastName: user.lastName }
             })
             return;
+        }
+
+        let refreshToken = crypto.randomBytes(40).toString('hex');
+        const userToken = {userId: user._id, refreshToken}
+
+        const savedToken = await tokens.create({...userToken});
+        if (savedToken) {
+            await DB.caching.redis_client.set(user.username, JSON.stringify(savedToken), {
+                EX: 60 * 60 * 24,
+                NX: true
+            });
         }
 
     } catch (error) {
