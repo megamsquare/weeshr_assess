@@ -135,7 +135,11 @@ async function sign_in(req:Request, res: Response) {
 }
 
 async function refresh_token(req:Request, res: Response) {
-    
+    const { refreshToken } = req.body;
+    let userRefresh;
+    if (!refreshToken) {
+        res.status(status_code.BAD_REQUEST).json({ message: Err.RefreshTokenExists })
+    }
 }
 
 async function forgot_password(req:Request, res: Response) {
