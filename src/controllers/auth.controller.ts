@@ -111,12 +111,23 @@ async function sign_in(req:Request, res: Response) {
         const userToken = {userId: user._id, refreshToken}
 
         const savedToken = await tokens.create({...userToken});
+
         if (savedToken) {
             await DB.caching.redis_client.set(user.username, JSON.stringify(savedToken), {
                 EX: 60 * 60 * 24,
                 NX: true
             });
         }
+
+        isRefresh.check = true;
+        isRefresh.refreshToken = refreshToken;
+
+        const refreshJWT = await user.create_jwt(isRefresh);
+        res.status(status_code.OK).json({
+            access_token,
+            refresh_token: refreshJWT,
+            data: { firstName: user.firstName, lastName: user.lastName }
+        })
 
     } catch (error) {
         
