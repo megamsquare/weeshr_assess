@@ -136,16 +136,21 @@ async function sign_in(req:Request, res: Response) {
 }
 
 async function refresh_token(req:Request, res: Response) {
-    const { refreshToken } = req.body;
+    const header = req.headers.authorization;
     let userRefresh;
-    if (!refreshToken) {
-        res.status(status_code.BAD_REQUEST).json({ message: Err.RefreshTokenExists });
+    if (!header || !header.startsWith('Bearer')) {
+        res.status(status_code.BAD_REQUEST).json({ message: Err.Unauthentication });
         return;
     }
 
+    let userToken = header.split(' ')[1];
+
+    const refreshKey = process.env.JWT_SECRET_KEY || '';
+
     try {
         const isRefresh = {};
-        const payload = jwt.v
+        // const payload = jwt.verify(refreshToken, refreshKey);
+        // const user = await Model.User.findOne({_id: payload.})
     } catch (error) {
         
     }
