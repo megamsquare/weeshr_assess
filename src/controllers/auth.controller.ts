@@ -50,7 +50,7 @@ async function sign_in(req:Request, res: Response) {
     const tokens = Model.Tokens;
     let isCache = true;
 
-    if (!usernameOrEmail || password) {
+    if (!usernameOrEmail || !password) {
         res.status(status_code.BAD_REQUEST).json({ message: Err.ProvideLoginDetails });
         return;
     }
