@@ -4,6 +4,7 @@ import Model from "../models";
 import Err from "../use_cases/error_handler";
 import DB from "../db";
 import crypto from "crypto";
+import jwt from 'jsonwebtoken';
 
 async function sign_up(req: Request, res: Response) {
        try {
@@ -138,7 +139,15 @@ async function refresh_token(req:Request, res: Response) {
     const { refreshToken } = req.body;
     let userRefresh;
     if (!refreshToken) {
-        res.status(status_code.BAD_REQUEST).json({ message: Err.RefreshTokenExists })
+        res.status(status_code.BAD_REQUEST).json({ message: Err.RefreshTokenExists });
+        return;
+    }
+
+    try {
+        const isRefresh = {};
+        const payload = jwt.v
+    } catch (error) {
+        
     }
 }
 
