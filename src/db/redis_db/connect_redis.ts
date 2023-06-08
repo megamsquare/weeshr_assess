@@ -17,7 +17,10 @@ async function connect_redis() {
     try {
         await redis_client.connect();
         console.log('Successfully connect to Redis');
-        // redis_client.setEx('Test', 60*60*24, 'testing')
+
+
+        // const datas = await redis_client.v4.GET('megamsquare')
+        // console.log(`Get information from redis: ${datas}`)
     } catch (err) {
         console.error(`Redis connection error: ${err}`);
     }
