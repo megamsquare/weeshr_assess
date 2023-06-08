@@ -86,10 +86,7 @@ async function sign_in(req:Request, res: Response) {
 
         if (existingToken) {
             if (!isCache) {
-                await DB.caching.redis_client.set(user.username, JSON.stringify(existingToken), {
-                    EX: 60 * 60 * 24,
-                    NX: true
-                });
+                await DB.caching.redis_client.setEx(user.username, 60*60*24, JSON.stringify(existingToken));
             }
 
             if (!existingToken.isValid) {
@@ -113,10 +110,7 @@ async function sign_in(req:Request, res: Response) {
         const savedToken = await tokens.create({...userToken});
 
         if (savedToken) {
-            await DB.caching.redis_client.set(user.username, JSON.stringify(savedToken), {
-                EX: 60 * 60 * 24,
-                NX: true
-            });
+            await DB.caching.redis_client.setEx(user.username, 60*60*24, JSON.stringify(savedToken));
         }
 
         isRefresh.check = true;

@@ -1,4 +1,4 @@
-import {createClient} from 'redis';
+import { createClient } from 'redis';
 
 const redisHost = process.env.REDIS_HOST || 'localhost';
 const redisPort = 6379;
@@ -17,6 +17,7 @@ async function connect_redis() {
     try {
         await redis_client.connect();
         console.log('Successfully connect to Redis');
+        // redis_client.setEx('Test', 60*60*24, 'testing')
     } catch (err) {
         console.error(`Redis connection error: ${err}`);
     }
