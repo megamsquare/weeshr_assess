@@ -73,14 +73,14 @@ async function sign_in(req:Request, res: Response) {
             return
         }
 
-        const access_token = await user.create_jwt(isRefresh);
-
         const refresh_cache = await DB.caching.redis_client.get(user.username);
 
         if (refresh_cache) {
             existingToken = JSON.parse(refresh_cache);
+            console.log(`Token exist in Cache: ${existingToken}`)
         } else {
             existingToken = await tokens.findOne({ userId: user._id });
+            console.log(`Token exist in Table: ${existingToken}`)
             isCache = false;
         }
 
@@ -99,11 +99,10 @@ async function sign_in(req:Request, res: Response) {
 
             isRefresh.check = true;
             isRefresh.refreshToken = existingToken.refreshToken;
-            const refreshJWT = await user.create_jwt(isRefresh);
+            const access_token = await user.create_jwt(isRefresh);
             res.status(status_code.OK).json({
                 data: { firstName: user.firstName, lastName: user.lastName },
-                access_token,
-                refresh_token: refreshJWT
+                access_token
             })
             return;
         }
@@ -122,12 +121,10 @@ async function sign_in(req:Request, res: Response) {
 
         isRefresh.check = true;
         isRefresh.refreshToken = refreshToken;
-
-        const refreshJWT = await user.create_jwt(isRefresh);
+        const access_token = await user.create_jwt(isRefresh);
         res.status(status_code.OK).json({
             data: { firstName: user.firstName, lastName: user.lastName },
-            access_token,
-            refresh_token: refreshJWT
+            access_token
         })
 
     } catch (error) {
