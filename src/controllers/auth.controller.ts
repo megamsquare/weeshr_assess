@@ -75,15 +75,10 @@ async function sign_in(req:Request, res: Response) {
 
         const refresh_cache = await DB.caching.redis_client.v4.GET(user.username);
 
-        console.log(`This is the cache details: ${refresh_cache}`)
-        console.log(`This is the cache dkey: ${user.username}`)
-
         if (refresh_cache) {
             existingToken = JSON.parse(refresh_cache);
-            console.log(`Token exist in Cache: ${existingToken}`)
         } else {
             existingToken = await tokens.findOne({ userId: user._id });
-            console.log(`Token exist in Table: ${existingToken}`)
             isCache = false;
         }
 
