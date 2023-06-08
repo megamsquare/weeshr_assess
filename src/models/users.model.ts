@@ -63,9 +63,8 @@ UserSchema.method('create_jwt', async function (is_refresh) {
     let jwtoken = '';
     let jwt_key = process.env.JWT_SECRET_KEY || ''
     if (!is_refresh.check) {
-        console.log(is_refresh);
         jwtoken = jwt.sign(
-            { userId: this._id },
+            { userId: this._id, username: this.username, refresh: is_refresh.refreshToken },
             jwt_key,
             { expiresIn: process.env.JWT_EXPIRES_IN }
         );
