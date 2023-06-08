@@ -101,9 +101,9 @@ async function sign_in(req:Request, res: Response) {
             isRefresh.refreshToken = existingToken.refreshToken;
             const refreshJWT = await user.create_jwt(isRefresh);
             res.status(status_code.OK).json({
+                data: { firstName: user.firstName, lastName: user.lastName },
                 access_token,
-                refresh_token: refreshJWT,
-                data: { firstName: user.firstName, lastName: user.lastName }
+                refresh_token: refreshJWT
             })
             return;
         }
@@ -125,9 +125,9 @@ async function sign_in(req:Request, res: Response) {
 
         const refreshJWT = await user.create_jwt(isRefresh);
         res.status(status_code.OK).json({
+            data: { firstName: user.firstName, lastName: user.lastName },
             access_token,
-            refresh_token: refreshJWT,
-            data: { firstName: user.firstName, lastName: user.lastName }
+            refresh_token: refreshJWT
         })
 
     } catch (error) {

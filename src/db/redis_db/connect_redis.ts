@@ -15,8 +15,8 @@ async function connect_redis() {
     redis_client.on('error', (error) => console.error(`Error from connecting to redis: ${error}`));
 
     try {
-        const res = await redis_client.connect();
-        console.log(`Successfully connect to Redis: ${res}`);
+        await redis_client.connect();
+        console.log('Successfully connect to Redis');
     } catch (err) {
         console.error(`Redis connection error: ${err}`);
     }
