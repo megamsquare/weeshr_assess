@@ -5,6 +5,7 @@ import Err from "../use_cases/error_handler";
 import DB from "../db";
 import crypto from "crypto";
 import jwt from 'jsonwebtoken';
+import { Console } from "console";
 
 async function sign_up(req: Request, res: Response) {
        try {
@@ -138,11 +139,14 @@ async function refresh_token(req:Request, res: Response) {
 
     try {
         const isRefresh = {};
+        // const payload = jwt.verify(userToken, refreshKey, {clockTimestamp: new Date().getTime()}) as jwt.JwtPayload;
         const payload = jwt.verify(userToken, refreshKey) as jwt.JwtPayload;
+        console.log(payload);
         const user = await Model.User.findOne({_id: payload.userId});
         res.status(status_code.OK).json({user})
     } catch (error) {
-        
+        res.status(status_code.BAD_REQUEST).json({ message: error });
+        return;
     }
 }
 

@@ -19,11 +19,15 @@ function verify_token(req: UserRequest, res: Response, next: NextFunction) {
     token = header.split(' ')[1];
 
     try {
-        const payload = jwt.verify(token, jwt_key) as jwt.JwtPayload;
+        const payload = jwt.verify(token, jwt_key, {clockTimestamp: new Date().getTime()}) as jwt.JwtPayload;
 
         req.user = { userId: payload.userId, role: payload.role }
         next();
     } catch (error) {
+        if (error instanceof jwt.TokenExpiredError) {
+            res.status(status_code.UNAUTHORIZED).json({ message: error.message });
+            return;
+        }
         res.status(status_code.UNAUTHORIZED).json({ message: Err.Unauthentication });
         return
     }
