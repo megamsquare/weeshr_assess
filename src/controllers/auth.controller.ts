@@ -138,8 +138,9 @@ async function refresh_token(req:Request, res: Response) {
 
     try {
         const isRefresh = {};
-        // const payload = jwt.verify(refreshToken, refreshKey);
-        // const user = await Model.User.findOne({_id: payload.})
+        const payload = jwt.verify(userToken, refreshKey) as jwt.JwtPayload;
+        const user = await Model.User.findOne({_id: payload.userId});
+        res.status(status_code.OK).json({user})
     } catch (error) {
         
     }
