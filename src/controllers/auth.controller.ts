@@ -143,6 +143,10 @@ async function refresh_token(req:Request, res: Response) {
         const payload = jwt.verify(userToken, refreshKey) as jwt.JwtPayload;
         console.log(payload);
         const user = await Model.User.findOne({_id: payload.userId});
+        const refreshCache = await DB.caching.redis_client.v4.GET(payload.username);
+        if (refreshCache) {
+            userRefresh = JSON.parse(refreshCache);
+        } else {}
         res.status(status_code.OK).json({user})
     } catch (error) {
         res.status(status_code.BAD_REQUEST).json({ message: error });
