@@ -138,7 +138,10 @@ async function refresh_token(req:Request, res: Response) {
     const refreshKey = process.env.JWT_SECRET_KEY || '';
 
     try {
-        const isRefresh = {};
+        const isRefresh = {
+            check: false,
+            refreshToken: ""
+        };
         // const payload = jwt.verify(userToken, refreshKey, {clockTimestamp: new Date().getTime()}) as jwt.JwtPayload;
         const payload = jwt.verify(userToken, refreshKey) as jwt.JwtPayload;
         console.log(payload);
