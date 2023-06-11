@@ -142,14 +142,33 @@ async function refresh_token(req:Request, res: Response) {
             check: false,
             refreshToken: ""
         };
+        let isCached = true;
         // const payload = jwt.verify(userToken, refreshKey, {clockTimestamp: new Date().getTime()}) as jwt.JwtPayload;
         const payload = jwt.verify(userToken, refreshKey) as jwt.JwtPayload;
         console.log(payload);
         const user = await Model.User.findOne({_id: payload.userId});
+        if (!user) {
+            res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidUsernameOrEmail });
+            return;
+        }
         const refreshCache = await DB.caching.redis_client.v4.GET(payload.username);
         if (refreshCache) {
             userRefresh = JSON.parse(refreshCache);
-        } else {}
+        } else {
+            userRefresh = await Model.Tokens.findOne({ userId: payload.userId });
+            isCached = false;
+        }
+
+        if (userRefresh) {
+            if (!isCached) {
+                await DB.caching.redis_client.setEx(user.username, 60*60*24, JSON.stringify(userRefresh))
+            }
+
+            if (!userRefresh.isValid) {
+                res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidToken });
+                return;
+            }
+        }
         res.status(status_code.OK).json({user})
     } catch (error) {
         res.status(status_code.BAD_REQUEST).json({ message: error });
