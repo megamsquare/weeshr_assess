@@ -121,7 +121,8 @@ async function sign_in(req:Request, res: Response) {
         })
 
     } catch (error) {
-        
+        res.status(status_code.BAD_REQUEST).json({ message: error });
+        return;
     }
 }
 
@@ -172,8 +173,12 @@ async function refresh_token(req:Request, res: Response) {
             return;
         }
 
-
-        res.status(status_code.OK).json({user})
+        isRefresh.refreshToken = userRefresh.refreshToken;
+        const access_token = await user.create_jwt(isRefresh);
+        res.status(status_code.OK).json({
+            data: { firstName: user.firstName, lastName: user.lastName },
+            access_token
+        })
     } catch (error) {
         res.status(status_code.BAD_REQUEST).json({ message: error });
         return;
