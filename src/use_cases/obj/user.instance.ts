@@ -1,0 +1,3 @@
+interface SignUp {
+    email: string
+}
