@@ -8,9 +8,22 @@ async function createUser(user: SignUp) {
 
         const emailExist = await userModel.exists({ email: user.email });
         if (!emailExist) {
-            throw new Error()
+            throw new Error(Err.EmailExists);
         }
+
+        const usernameExist = await userModel.exists({ username: user.username });
+        if (!usernameExist) {
+            throw new Error(Err.UsernameExists)
+        }
+
+        const saveUser = await userModel.create({ ...user })
+
+        return saveUser;
     } catch (error) {
-        
+        return error;
     }
+}
+
+const UserService = {
+    createUser
 }
