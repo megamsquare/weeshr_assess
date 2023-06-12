@@ -3,38 +3,46 @@ import status_code from "http-status";
 import Model from "../models";
 import Err from "../use_cases/error_handler";
 import DB from "../db";
-import crypto from "crypto";
+import crypto, { Sign } from "crypto";
 import jwt from 'jsonwebtoken';
-import { Console } from "console";
+import { SignUp } from "../use_cases/obj/user.case";
+import UserService from "../services/user.service";
 
 async function sign_up(req: Request, res: Response) {
        try {
-
-        const user_model = Model.User;
+        let userInfo: SignUp;
+        userInfo = req.body;
+        // const user_model = Model.User;
         const role_model = Model.Roles;
         
-        const email_exist = await user_model.exists({ email: req.body.email })
-        if (email_exist) {
-            res.status(status_code.BAD_REQUEST).json({ message: 'Email is already taken' })
-            return
-        }
+        // const email_exist = await user_model.exists({ email: req.body.email })
+        // if (email_exist) {
+        //     res.status(status_code.BAD_REQUEST).json({ message: 'Email is already taken' })
+        //     return
+        // }
 
-        const username_exist = await user_model.exists({ username: req.body.username })
-        if (username_exist) {
-            res.status(status_code.BAD_REQUEST).json({ message: 'Username is already taken' })
-            return
-        }
+        // const username_exist = await user_model.exists({ username: req.body.username })
+        // if (username_exist) {
+        //     res.status(status_code.BAD_REQUEST).json({ message: 'Username is already taken' })
+        //     return
+        // }
     
-        const user = await user_model.create({ ...req.body })
+        // const user = await user_model.create({ ...req.body })
 
-        const save_role = {
-            userId: user._id,
-            role: "user"
+        const user = await UserService.createUser(userInfo)
+        console.log("User error", user)
+        if (user instanceof Error) {
+            res.status(status_code.BAD_REQUEST).json({ user });
         }
 
-        const role = await role_model.create({ ...save_role })
+        // const save_role = {
+        //     userId: user._id,
+        //     role: "user"
+        // }
 
-        res.status(status_code.CREATED).json({ data: { message: 'User created successfully' }})
+        // const role = await role_model.create({ ...save_role })
+
+        // res.status(status_code.CREATED).json({ data: { message: 'User created successfully' }})
 
        } catch (error) {
         res.status(status_code.BAD_REQUEST).json({ message: error })

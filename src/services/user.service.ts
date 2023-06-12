@@ -7,12 +7,12 @@ async function createUser(user: SignUp) {
         const userModel = Model.User;
 
         const emailExist = await userModel.exists({ email: user.email });
-        if (!emailExist) {
+        if (emailExist) {
             throw new Error(Err.EmailExists);
         }
 
         const usernameExist = await userModel.exists({ username: user.username });
-        if (!usernameExist) {
+        if (usernameExist) {
             throw new Error(Err.UsernameExists)
         }
 
@@ -27,3 +27,5 @@ async function createUser(user: SignUp) {
 const UserService = {
     createUser
 }
+
+export default UserService;
