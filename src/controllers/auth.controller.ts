@@ -5,7 +5,7 @@ import Err from "../use_cases/error_handler";
 import DB from "../db";
 import crypto, { Sign } from "crypto";
 import jwt from 'jsonwebtoken';
-import { NewRole, NewUser } from "../use_cases/obj/user.case";
+import { NewRole, NewUser, IsRefresh } from "../use_cases/obj/user.case";
 import UserService from "../services/user.service";
 import RoleService from "../services/role.service";
 
@@ -60,7 +60,7 @@ async function sign_up(req: Request, res: Response) {
 
 async function sign_in(req:Request, res: Response) {
     const { usernameOrEmail, password } = req.body;
-    const isRefresh = {
+    const isRefresh: IsRefresh = {
         check: false,
         refreshToken: "",
         roles: []
@@ -91,6 +91,13 @@ async function sign_in(req:Request, res: Response) {
             res.status(status_code.BAD_REQUEST).json({ mesaage: Err.IncorrectPassword });
             return
         }
+
+        const getRoles = await RoleService.getRoleByUserId(user._id);
+        
+        const roles = getRoles?.map((role) => role.role);
+
+        isRefresh.roles = roles
+        console.log('roles: ', isRefresh);
 
         const refresh_cache = await DB.caching.redis_client.v4.GET(user.username);
 

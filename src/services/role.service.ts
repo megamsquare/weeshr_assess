@@ -6,7 +6,7 @@ async function createRole(role: NewRole) {
     try {
         const roleModel = Model.Roles;
 
-        // const getUserRole
+        const getUserRole = getRoleByUserId(role.userId)
 
         const savedRole = await roleModel.create({ ...role });
 
