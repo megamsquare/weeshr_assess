@@ -5,17 +5,17 @@ import Err from "../use_cases/error_handler";
 import DB from "../db";
 import crypto, { Sign } from "crypto";
 import jwt from 'jsonwebtoken';
-import { NewUser } from "../use_cases/obj/user.case";
+import { NewRole, NewUser } from "../use_cases/obj/user.case";
 import UserService from "../services/user.service";
-import { IUser } from "../models/users.model";
-import { Types } from "mongoose";
+import RoleService from "../services/role.service";
 
 async function sign_up(req: Request, res: Response) {
        try {
         let userInfo: NewUser;
+        let roleInfo: NewRole
         userInfo = req.body;
         // const user_model = Model.User;
-        const role_model = Model.Roles;
+        // const role_model = Model.Roles;
         
         // const email_exist = await user_model.exists({ email: req.body.email })
         // if (email_exist) {
@@ -36,14 +36,15 @@ async function sign_up(req: Request, res: Response) {
             res.status(status_code.BAD_REQUEST).json({ message: user.message});
         }
 
-        // const { _id } = user
         if ('_id' in user) {
             const { _id } = user;
 
-            const save_role = {
+            roleInfo = {
                 userId: _id,
                 role: "user"
             }
+            const role = await RoleService.createRole(roleInfo);
+            // if (role instanceof Error) {}
 
             res.status(status_code.CREATED).json({ data: { message: 'User created successfully' }})
         }
@@ -61,7 +62,8 @@ async function sign_in(req:Request, res: Response) {
     const { usernameOrEmail, password } = req.body;
     const isRefresh = {
         check: false,
-        refreshToken: ""
+        refreshToken: "",
+        roles: []
     }
     let existingToken;
     const tokens = Model.Tokens;
