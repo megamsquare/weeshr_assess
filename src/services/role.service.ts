@@ -6,7 +6,7 @@ async function createRole(role: NewRole) {
     try {
         const roleModel = Model.Roles;
 
-        const getUserRole = getRoleByUserId(role.userId)
+        const getUserRole = getRoleByUserId(role.userId);
 
         const savedRole = await roleModel.create({ ...role });
 
@@ -39,7 +39,7 @@ async function getRoleByUserId(userId: string) {
 
         return rolesByUserId;
    } catch (error) {
-
+    console.log(error)
     }
 }
 

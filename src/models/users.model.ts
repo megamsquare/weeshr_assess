@@ -72,7 +72,7 @@ UserSchema.method('create_jwt', async function (is_refresh: IsRefresh) {
         return jwtoken
     } else {
         jwtoken = jwt.sign(
-            { userId: this._id,username: this.username, refresh: is_refresh.refreshToken },
+            { userId: this._id,username: this.username, roles: is_refresh.roles, refresh: is_refresh.refreshToken },
             jwt_key,
             { expiresIn: process.env.REFRESH_JWT_EXPIRES_IN }
         );
