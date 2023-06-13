@@ -44,6 +44,8 @@ async function sign_up(req: Request, res: Response) {
                 userId: _id,
                 role: "user"
             }
+
+            res.status(status_code.CREATED).json({ data: { message: 'User created successfully' }})
         }
 
         // const role = await role_model.create({ ...save_role })
