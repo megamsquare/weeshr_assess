@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { IsRefresh } from "../use_cases/obj/user.case";
 
 export interface IUser extends mongoose.Document {
     firstName: string;
@@ -59,12 +60,12 @@ UserSchema.method('compare_password', async function (input_password) {
     return isMatch;
 });
 
-UserSchema.method('create_jwt', async function (is_refresh) {
+UserSchema.method('create_jwt', async function (is_refresh: IsRefresh) {
     let jwtoken = '';
     let jwt_key = process.env.JWT_SECRET_KEY || ''
     if (!is_refresh.check) {
         jwtoken = jwt.sign(
-            { userId: this._id, username: this.username, refresh: is_refresh.refreshToken },
+            { userId: this._id, username: this.username, roles: is_refresh.roles, refresh: is_refresh.refreshToken },
             jwt_key,
             { expiresIn: process.env.JWT_EXPIRES_IN }
         );
