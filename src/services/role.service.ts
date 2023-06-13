@@ -6,9 +6,18 @@ async function createRole(role: NewRole) {
     try {
         const roleModel = Model.Roles;
 
-        const getUserRole = getRoleByUserId(role.userId);
+        const getUserRole = await getRoleByUserId(role.userId);
+
+        const roles = getUserRole?.map((role) => role.role);
+
+        const isRoleExist = roles?.includes(role.role);
+        if (isRoleExist) {
+            throw new Error("user already have this role");
+        }
 
         const savedRole = await roleModel.create({ ...role });
+
+        return savedRole
 
     } catch (error) {
 

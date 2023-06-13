@@ -14,22 +14,6 @@ async function sign_up(req: Request, res: Response) {
         let userInfo: NewUser;
         let roleInfo: NewRole
         userInfo = req.body;
-        // const user_model = Model.User;
-        // const role_model = Model.Roles;
-        
-        // const email_exist = await user_model.exists({ email: req.body.email })
-        // if (email_exist) {
-        //     res.status(status_code.BAD_REQUEST).json({ message: 'Email is already taken' })
-        //     return
-        // }
-
-        // const username_exist = await user_model.exists({ username: req.body.username })
-        // if (username_exist) {
-        //     res.status(status_code.BAD_REQUEST).json({ message: 'Username is already taken' })
-        //     return
-        // }
-    
-        // const user = await user_model.create({ ...req.body })
 
         const user = await UserService.createUser(userInfo)
         if (user instanceof Error) {
@@ -44,14 +28,13 @@ async function sign_up(req: Request, res: Response) {
                 role: "user"
             }
             const role = await RoleService.createRole(roleInfo);
-            // if (role instanceof Error) {}
+            if (role instanceof Error) {
+                console.error(role.message);
+            }
 
             res.status(status_code.CREATED).json({ data: { message: 'User created successfully' }})
+            return;
         }
-
-        // const role = await role_model.create({ ...save_role })
-
-        // res.status(status_code.CREATED).json({ data: { message: 'User created successfully' }})
 
        } catch (error) {
         res.status(status_code.BAD_REQUEST).json({ message: error })
