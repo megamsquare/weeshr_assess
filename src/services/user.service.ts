@@ -1,8 +1,10 @@
-import { SignUp } from "../use_cases/obj/user.case";
+import { NewUser } from "../use_cases/obj/user.case";
 import Model from "../models";
 import Err from "../use_cases/error_handler";
+import { IUser } from "../models/users.model";
+import { Types } from "mongoose";
 
-async function createUser(user: SignUp) {
+async function createUser(user: NewUser): Promise<IUser & {_id: Types.ObjectId} | Error> {
     try {
         const userModel = Model.User;
 
@@ -20,7 +22,7 @@ async function createUser(user: SignUp) {
 
         return saveUser;
     } catch (error) {
-        return error;
+        return error as Error;
     }
 }
 

@@ -5,12 +5,14 @@ import Err from "../use_cases/error_handler";
 import DB from "../db";
 import crypto, { Sign } from "crypto";
 import jwt from 'jsonwebtoken';
-import { SignUp } from "../use_cases/obj/user.case";
+import { NewUser } from "../use_cases/obj/user.case";
 import UserService from "../services/user.service";
+import { IUser } from "../models/users.model";
+import { Types } from "mongoose";
 
 async function sign_up(req: Request, res: Response) {
        try {
-        let userInfo: SignUp;
+        let userInfo: NewUser;
         userInfo = req.body;
         // const user_model = Model.User;
         const role_model = Model.Roles;
@@ -30,15 +32,19 @@ async function sign_up(req: Request, res: Response) {
         // const user = await user_model.create({ ...req.body })
 
         const user = await UserService.createUser(userInfo)
-        console.log("User error", user)
         if (user instanceof Error) {
-            res.status(status_code.BAD_REQUEST).json({ user });
+            res.status(status_code.BAD_REQUEST).json({ message: user.message});
         }
 
-        // const save_role = {
-        //     userId: user._id,
-        //     role: "user"
-        // }
+        // const { _id } = user
+        if ('_id' in user) {
+            const { _id } = user;
+
+            const save_role = {
+                userId: _id,
+                role: "user"
+            }
+        }
 
         // const role = await role_model.create({ ...save_role })
 
