@@ -80,7 +80,6 @@ async function signIn(req:Request, res: Response) {
         const roles = getRoles?.map((role) => role.role);
 
         isRefresh.roles = roles
-        console.log('roles: ', isRefresh);
 
         const refresh_cache = await DB.caching.redis_client.v4.GET(user.username);
 

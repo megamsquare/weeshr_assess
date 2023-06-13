@@ -21,3 +21,14 @@ export interface LoginInfo {
     usernameOrEmail: string;
     password: string;
 }
+
+export interface GetUserToken {
+    userId: string;
+    username: string;
+}
+
+export interface NewToken {
+    userId: string;
+    refreshToken: string;
+
+}
