@@ -9,7 +9,7 @@ import { NewRole, NewUser, IsRefresh } from "../use_cases/obj/user.case";
 import UserService from "../services/user.service";
 import RoleService from "../services/role.service";
 
-async function sign_up(req: Request, res: Response) {
+async function signUp(req: Request, res: Response) {
        try {
         let userInfo: NewUser;
         let roleInfo: NewRole
@@ -41,7 +41,7 @@ async function sign_up(req: Request, res: Response) {
        }
 }
 
-async function sign_in(req:Request, res: Response) {
+async function signIn(req:Request, res: Response) {
     const { usernameOrEmail, password } = req.body;
     const isRefresh: IsRefresh = {
         check: false,
@@ -134,7 +134,7 @@ async function sign_in(req:Request, res: Response) {
     }
 }
 
-async function refresh_token(req:Request, res: Response) {
+async function refreshToken(req:Request, res: Response) {
     const header = req.headers.authorization;
     let userRefresh;
     if (!header || !header.startsWith('Bearer')) {
@@ -198,9 +198,9 @@ async function forgot_password(req:Request, res: Response) {
 }
 
 const Auth_controller = {
-    sign_up,
-    sign_in,
-    refresh_token,
+    signUp,
+    signIn,
+    refreshToken,
     forgot_password,
 };
 
