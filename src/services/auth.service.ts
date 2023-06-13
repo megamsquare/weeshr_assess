@@ -9,14 +9,6 @@ async function login() {
 }
 
 async function signUp() {
-    try {
-        const userModel = Model.User;
-        const roleModel = Model.Roles;
-
-        // const emailExist = await userModel.exists({email: })
-    } catch (error) {
-        
-    }
 }
 
 const Auth = {

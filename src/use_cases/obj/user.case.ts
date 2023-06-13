@@ -5,3 +5,8 @@ export interface NewUser {
     username: string;
     password: string;
 }
+
+export interface NewRole {
+    userId: string;
+    role: string;
+}
