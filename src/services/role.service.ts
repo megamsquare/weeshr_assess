@@ -20,7 +20,7 @@ async function createRole(role: NewRole) {
         return savedRole
 
     } catch (error) {
-
+        return error as Error
     }
 }
 
@@ -36,7 +36,7 @@ async function getRoleById(id: string) {
 
         return roleById;
     } catch (error) {
-
+        return error as Error
     }
 }
 
@@ -44,11 +44,11 @@ async function getRoleByUserId(userId: string) {
     try {
         const roleModel = Model.Roles;
 
-        const rolesByUserId = await roleModel.find({userId: userId});
+        const rolesByUserId = await roleModel.find({ userId: userId });
 
         return rolesByUserId;
-   } catch (error) {
-    console.log(error)
+    } catch (error) {
+        console.log(error)
     }
 }
 
