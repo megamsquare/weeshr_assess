@@ -3,7 +3,7 @@ import status_code from "http-status";
 import Model from "../models";
 import Err from "../use_cases/error_handler";
 import DB from "../db";
-import crypto, { Sign } from "crypto";
+import crypto from "crypto";
 import jwt from 'jsonwebtoken';
 import { NewRole, NewUser, IsRefresh } from "../use_cases/obj/user.case";
 import UserService from "../services/user.service";

@@ -2,8 +2,18 @@ import Model from "../models";
 import { GetUserToken, NewToken } from "../use_cases/obj/user.case";
 import DB from "../db";
 import Err from "../use_cases/error_handler";
+import crypto from "crypto";
 
 async function createToken(userInfo: NewToken) {
+    try {
+        const tokenModel = Model.Tokens;
+        let refreshToken = crypto.randomBytes(40).toString('hex');
+
+        const savedToken = await tokenModel.create({...userInfo});
+    } catch (error) {
+        
+    }
+    
 }
 
 async function getUserToken(userInfo: GetUserToken) {
