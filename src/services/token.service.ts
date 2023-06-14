@@ -8,12 +8,17 @@ async function createToken(userInfo: NewToken) {
     try {
         const tokenModel = Model.Tokens;
         let refreshToken = crypto.randomBytes(40).toString('hex');
+        const userToken = { userId: userInfo.userId, refreshToken }
 
-        const savedToken = await tokenModel.create({...userInfo});
+        const savedToken = await tokenModel.create({ ...userToken });
+
+        if (savedToken) {
+            await DB.caching.redis_client.setEx(userInfo.username, 60 * 60 * 24, JSON.stringify(savedToken));
+        }
     } catch (error) {
-        
+
     }
-    
+
 }
 
 async function getUserToken(userInfo: GetUserToken) {
@@ -25,7 +30,7 @@ async function getUserToken(userInfo: GetUserToken) {
         existingToken = JSON.parse(refreshCache);
     } else {
         existingToken = await tokenModel.findOne({ userId: userInfo.userId });
-        await DB.caching.redis_client.setEx(userInfo.username, 60*60*24, JSON.stringify(existingToken));
+        await DB.caching.redis_client.setEx(userInfo.username, 60 * 60 * 24, JSON.stringify(existingToken));
     }
 
     if (existingToken) {
@@ -38,7 +43,7 @@ async function getUserToken(userInfo: GetUserToken) {
 }
 
 async function getTokenByUserId(userId: string) {
-    
+
 }
 
 const TokenService = {};

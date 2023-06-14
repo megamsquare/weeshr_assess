@@ -29,6 +29,5 @@ export interface GetUserToken {
 
 export interface NewToken {
     userId: string;
-    refreshToken: string;
-
+    username: string;
 }
