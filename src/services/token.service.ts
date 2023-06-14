@@ -15,31 +15,37 @@ async function createToken(userInfo: NewToken) {
         if (savedToken) {
             await DB.caching.redis_client.setEx(userInfo.username, 60 * 60 * 24, JSON.stringify(savedToken));
         }
-    } catch (error) {
 
+        return savedToken;
+    } catch (error) {
+        throw new Error(`Error creating Token ${Err}`);
     }
 
 }
 
 async function getUserToken(userInfo: GetUserToken) {
-    let existingToken;
-    const tokenModel = Model.Tokens;
-    const refreshCache = await DB.caching.redis_client.v4.GET(userInfo.username);
+    try {
+        let existingToken;
+        const tokenModel = Model.Tokens;
+        const refreshCache = await DB.caching.redis_client.v4.GET(userInfo.username);
 
-    if (refreshCache) {
-        existingToken = JSON.parse(refreshCache);
-    } else {
-        existingToken = await tokenModel.findOne({ userId: userInfo.userId });
-        await DB.caching.redis_client.setEx(userInfo.username, 60 * 60 * 24, JSON.stringify(existingToken));
-    }
-
-    if (existingToken) {
-        if (!existingToken.isValid) {
-            throw new Error(Err.InvalidToken);
+        if (refreshCache) {
+            existingToken = JSON.parse(refreshCache);
+        } else {
+            existingToken = await tokenModel.findOne({ userId: userInfo.userId });
+            await DB.caching.redis_client.setEx(userInfo.username, 60 * 60 * 24, JSON.stringify(existingToken));
         }
-    }
 
-    return existingToken;
+        if (existingToken) {
+            if (!existingToken.isValid) {
+                throw new Error(Err.InvalidToken);
+            }
+        }
+
+        return existingToken;
+    } catch (error) {
+        console.log("Error in get user Token", error);
+    }
 }
 
 async function getTokenByUserId(userId: string) {
