@@ -5,10 +5,11 @@ import Err from "../use_cases/error_handler";
 import DB from "../db";
 import crypto from "crypto";
 import jwt from 'jsonwebtoken';
-import { NewRole, NewUser, IsRefresh, LoginInfo } from "../use_cases/obj/user.case";
+import { NewRole, NewUser, IsRefresh, LoginInfo, GetUserToken } from "../use_cases/obj/user.case";
 import UserService from "../services/user.service";
 import RoleService from "../services/role.service";
 import AuthService from "../services/auth.service";
+import TokenService from "../services/token.service";
 
 async function signUp(req: Request, res: Response) {
        try {
@@ -44,7 +45,6 @@ async function signUp(req: Request, res: Response) {
 }
 
 async function signIn(req:Request, res: Response) {
-    const { usernameOrEmail, password } = req.body;
     const userInfo: LoginInfo = req.body;
     const isRefresh: IsRefresh = {
         check: false,
@@ -53,12 +53,6 @@ async function signIn(req:Request, res: Response) {
     }
     let existingToken;
     const tokens = Model.Tokens;
-    let isCache = true;
-
-    // if (!usernameOrEmail || !password) {
-    //     res.status(status_code.BAD_REQUEST).json({ message: Err.ProvideLoginDetails });
-    //     return;
-    // }
 
     try {
         const user_model = Model.User;
@@ -86,37 +80,46 @@ async function signIn(req:Request, res: Response) {
             const getRoles = await RoleService.getRoleByUserId(user._id);
             const roles = getRoles?.map((role) => role.role);
             isRefresh.roles = roles
-        }
-        
 
-        const refresh_cache = await DB.caching.redis_client.v4.GET(user.username);
-
-        if (refresh_cache) {
-            existingToken = JSON.parse(refresh_cache);
-        } else {
-            existingToken = await tokens.findOne({ userId: user._id });
-            isCache = false;
-        }
-
-        if (existingToken) {
-            if (!isCache) {
-                await DB.caching.redis_client.setEx(user.username, 60*60*24, JSON.stringify(existingToken));
+            const getUserToken: GetUserToken = {
+                userId: user._id,
+                username: user.username
             }
 
-            if (!existingToken.isValid) {
-                res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidToken });
-                return;
+            existingToken = await TokenService.getUserToken(getUserToken);
+            if ('_id' in existingToken) {
+                
             }
-
-            isRefresh.check = true;
-            isRefresh.refreshToken = existingToken.refreshToken;
-            const access_token = await user.create_jwt(isRefresh);
-            res.status(status_code.OK).json({
-                data: { firstName: user.firstName, lastName: user.lastName },
-                access_token
-            })
-            return;
         }
+
+        // const refresh_cache = await DB.caching.redis_client.v4.GET(user.username);
+
+        // if (refresh_cache) {
+        //     existingToken = JSON.parse(refresh_cache);
+        // } else {
+        //     existingToken = await tokens.findOne({ userId: user._id });
+        //     isCache = false;
+        // }
+
+        // if (existingToken) {
+        //     if (!isCache) {
+        //         await DB.caching.redis_client.setEx(user.username, 60*60*24, JSON.stringify(existingToken));
+        //     }
+
+        //     if (!existingToken.isValid) {
+        //         res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidToken });
+        //         return;
+        //     }
+
+        //     isRefresh.check = true;
+        //     isRefresh.refreshToken = existingToken.refreshToken;
+        //     const access_token = await user.create_jwt(isRefresh);
+        //     res.status(status_code.OK).json({
+        //         data: { firstName: user.firstName, lastName: user.lastName },
+        //         access_token
+        //     })
+        //     return;
+        // }
 
         let refreshToken = crypto.randomBytes(40).toString('hex');
         const userToken = {userId: user._id, refreshToken}

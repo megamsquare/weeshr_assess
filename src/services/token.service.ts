@@ -52,6 +52,10 @@ async function getTokenByUserId(userId: string) {
 
 }
 
-const TokenService = {};
+const TokenService = {
+    createToken,
+    getUserToken,
+    getTokenByUserId
+};
 
 export default TokenService;
