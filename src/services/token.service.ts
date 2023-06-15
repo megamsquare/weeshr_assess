@@ -48,14 +48,9 @@ async function getUserToken(userInfo: UserToken) {
     }
 }
 
-async function getTokenByUserId(userId: string) {
-
-}
-
 const TokenService = {
     createToken,
-    getUserToken,
-    getTokenByUserId
+    getUserToken
 };
 
 export default TokenService;
