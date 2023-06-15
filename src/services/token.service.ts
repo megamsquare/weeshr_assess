@@ -18,7 +18,7 @@ async function createToken(userInfo: UserToken) {
 
         return savedToken;
     } catch (error) {
-        throw new Error(`Error creating Token ${Err}`);
+        console.error(`Create token Error: ${error}`)
     }
 
 }

@@ -51,10 +51,9 @@ async function signIn(req:Request, res: Response) {
             refreshToken: "",
             roles: []
         }
-        let existingToken;
         const user = await AuthService.loginUserCheck(userInfo);
         if (user instanceof Error) {
-            res.status(status_code.BAD_REQUEST).json({ message: user.message});
+            res.status(status_code.BAD_REQUEST).json({ message: user.message });
         }
 
         if (user !== undefined && '_id' in user) {
@@ -66,41 +65,38 @@ async function signIn(req:Request, res: Response) {
                 username: user.username
             }
 
-            existingToken = await TokenService.getUserToken(userToken);
+            const existingToken = await TokenService.getUserToken(userToken);
             if (existingToken instanceof Error) {
-                res.status(status_code.BAD_REQUEST).json({ message: existingToken.message});
+                res.status(status_code.BAD_REQUEST).json({ message: existingToken.message, badR: "from get token"});
             }
 
-            if ('_id' in existingToken) {
+            if (existingToken !== null && '_id' in existingToken) {
                 isRefresh.check = true;
                 isRefresh.refreshToken = existingToken.refreshToken;
-                const access_token = await user.create_jwt(isRefresh);
+                const accessToken = await user.create_jwt(isRefresh);
                 res.status(status_code.OK).json({
                     data: { firstName: user.firstName, lastName: user.lastName },
-                    access_token
+                    accessToken
                 });
                 return;
             }
 
             const savedToken = await TokenService.createToken(userToken);
 
-            if (savedToken instanceof Error) {
-                console.error(savedToken.message)
-            }
-
-            if ('_id' in savedToken) {
+            if (savedToken) {
                 isRefresh.check = true;
                 isRefresh.refreshToken = savedToken.refreshToken;
-                const access_token = await user.create_jwt(isRefresh);
+                const accessToken = await user.create_jwt(isRefresh);
                 res.status(status_code.OK).json({
                     data: { firstName: user.firstName, lastName: user.lastName },
-                    access_token
-                })
+                    accessToken
+                });
+                return;
             }
         }
 
     } catch (error) {
-        res.status(status_code.BAD_REQUEST).json({ message: error });
+        res.status(status_code.BAD_REQUEST).json({ message: error, badR: "from error catch" });
         return;
     }
 }
