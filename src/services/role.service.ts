@@ -6,9 +6,7 @@ async function createRole(role: NewRole) {
     try {
         const roleModel = Model.Roles;
 
-        const getUserRole = await getRoleByUserId(role.userId);
-
-        const roles = getUserRole?.map((role) => role.role);
+        const roles = await getRoleByUserId(role.userId);
 
         const isRoleExist = roles?.includes(role.role);
         if (isRoleExist) {
@@ -45,8 +43,9 @@ async function getRoleByUserId(userId: string) {
         const roleModel = Model.Roles;
 
         const rolesByUserId = await roleModel.find({ userId: userId });
+        const roles = rolesByUserId?.map((role) => role.role);
 
-        return rolesByUserId;
+        return roles;
     } catch (error) {
         console.log(error)
     }

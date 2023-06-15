@@ -77,8 +77,7 @@ async function signIn(req:Request, res: Response) {
         }
 
         if (user !== undefined && '_id' in user) {
-            const getRoles = await RoleService.getRoleByUserId(user._id);
-            const roles = getRoles?.map((role) => role.role);
+            const roles = await RoleService.getRoleByUserId(user._id);
             isRefresh.roles = roles
 
             const getUserToken: GetUserToken = {
@@ -87,6 +86,10 @@ async function signIn(req:Request, res: Response) {
             }
 
             existingToken = await TokenService.getUserToken(getUserToken);
+            if (existingToken instanceof Error) {
+                res.status(status_code.BAD_REQUEST).json({ message: existingToken.message});
+            }
+            
             if ('_id' in existingToken) {
                 
             }
