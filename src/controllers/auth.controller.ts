@@ -4,11 +4,14 @@ import Model from "../models";
 import Err from "../use_cases/error_handler";
 import DB from "../db";
 import jwt from 'jsonwebtoken';
-import { NewRole, NewUser, IsRefresh, LoginInfo, UserToken } from "../use_cases/obj/user.case";
-import UserService from "../services/user.service";
-import RoleService from "../services/role.service";
-import AuthService from "../services/auth.service";
-import TokenService from "../services/token.service";
+import { 
+    NewRole, 
+    NewUser, 
+    IsRefresh, 
+    LoginInfo, 
+    UserToken
+ } from "../use_cases/obj/user.case";
+import Services from "../services";
 
 async function signUp(req: Request, res: Response) {
        try {
@@ -16,7 +19,7 @@ async function signUp(req: Request, res: Response) {
         let roleInfo: NewRole
         userInfo = req.body;
 
-        const user = await UserService.createUser(userInfo)
+        const user = await Services.UserService.createUser(userInfo)
         if (user instanceof Error) {
             res.status(status_code.BAD_REQUEST).json({ message: user.message});
             return;
@@ -29,7 +32,7 @@ async function signUp(req: Request, res: Response) {
                 userId: _id,
                 role: "user"
             }
-            const role = await RoleService.createRole(roleInfo);
+            const role = await Services.RoleService.createRole(roleInfo);
             if (role instanceof Error) {
                 console.error(role.message);
             }
@@ -51,13 +54,13 @@ async function signIn(req:Request, res: Response) {
             refreshToken: "",
             roles: []
         }
-        const user = await AuthService.loginUserCheck(userInfo);
+        const user = await Services.AuthService.loginUserCheck(userInfo);
         if (user instanceof Error) {
             res.status(status_code.BAD_REQUEST).json({ message: user.message });
         }
 
         if (user !== undefined && '_id' in user) {
-            const roles = await RoleService.getRoleByUserId(user._id);
+            const roles = await Services.RoleService.getRoleByUserId(user._id);
             isRefresh.roles = roles
 
             const userToken: UserToken = {
@@ -65,7 +68,7 @@ async function signIn(req:Request, res: Response) {
                 username: user.username
             }
 
-            const existingToken = await TokenService.getUserToken(userToken);
+            const existingToken = await Services.TokenService.getUserToken(userToken);
             if (existingToken instanceof Error) {
                 res.status(status_code.BAD_REQUEST).json({ message: existingToken.message, badR: "from get token"});
             }
@@ -81,7 +84,7 @@ async function signIn(req:Request, res: Response) {
                 return;
             }
 
-            const savedToken = await TokenService.createToken(userToken);
+            const savedToken = await Services.TokenService.createToken(userToken);
 
             if (savedToken) {
                 isRefresh.check = true;
