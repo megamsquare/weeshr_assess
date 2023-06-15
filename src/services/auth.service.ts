@@ -36,9 +36,9 @@ async function loginUserCheck(loginInfo: LoginInfo) {
 async function signUp() {
 }
 
-const Auth = {
+const AuthService = {
     loginUserCheck,
     signUp
 }
 
-export default Auth;
+export default AuthService;

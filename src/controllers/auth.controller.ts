@@ -5,9 +5,10 @@ import Err from "../use_cases/error_handler";
 import DB from "../db";
 import crypto from "crypto";
 import jwt from 'jsonwebtoken';
-import { NewRole, NewUser, IsRefresh } from "../use_cases/obj/user.case";
+import { NewRole, NewUser, IsRefresh, LoginInfo } from "../use_cases/obj/user.case";
 import UserService from "../services/user.service";
 import RoleService from "../services/role.service";
+import AuthService from "../services/auth.service";
 
 async function signUp(req: Request, res: Response) {
        try {
@@ -18,6 +19,7 @@ async function signUp(req: Request, res: Response) {
         const user = await UserService.createUser(userInfo)
         if (user instanceof Error) {
             res.status(status_code.BAD_REQUEST).json({ message: user.message});
+            return;
         }
 
         if ('_id' in user) {
@@ -43,6 +45,7 @@ async function signUp(req: Request, res: Response) {
 
 async function signIn(req:Request, res: Response) {
     const { usernameOrEmail, password } = req.body;
+    const userInfo: LoginInfo = req.body;
     const isRefresh: IsRefresh = {
         check: false,
         refreshToken: "",
@@ -52,34 +55,39 @@ async function signIn(req:Request, res: Response) {
     const tokens = Model.Tokens;
     let isCache = true;
 
-    if (!usernameOrEmail || !password) {
-        res.status(status_code.BAD_REQUEST).json({ message: Err.ProvideLoginDetails });
-        return;
-    }
+    // if (!usernameOrEmail || !password) {
+    //     res.status(status_code.BAD_REQUEST).json({ message: Err.ProvideLoginDetails });
+    //     return;
+    // }
 
     try {
         const user_model = Model.User;
         
-        const user = await user_model.findOne({
-            $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }]
-        });
+        // const user = await user_model.findOne({
+        //     $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }]
+        // });
 
-        if (!user) {
-            res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidUsernameOrEmail });
-            return;
+        // if (!user) {
+        //     res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidUsernameOrEmail });
+        //     return;
+        // }
+
+        // const is_password = await user.compare_password(password);
+        // if (!is_password) {
+        //     res.status(status_code.BAD_REQUEST).json({ mesaage: Err.IncorrectPassword });
+        //     return
+        // }
+        const user = await AuthService.loginUserCheck(userInfo);
+        if (user instanceof Error) {
+            res.status(status_code.BAD_REQUEST).json({ message: user.message});
         }
 
-        const is_password = await user.compare_password(password);
-        if (!is_password) {
-            res.status(status_code.BAD_REQUEST).json({ mesaage: Err.IncorrectPassword });
-            return
+        if (user !== undefined && '_id' in user) {
+            const getRoles = await RoleService.getRoleByUserId(user._id);
+            const roles = getRoles?.map((role) => role.role);
+            isRefresh.roles = roles
         }
-
-        const getRoles = await RoleService.getRoleByUserId(user._id);
         
-        const roles = getRoles?.map((role) => role.role);
-
-        isRefresh.roles = roles
 
         const refresh_cache = await DB.caching.redis_client.v4.GET(user.username);
 
