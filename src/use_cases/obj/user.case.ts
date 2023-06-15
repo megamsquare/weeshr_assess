@@ -22,12 +22,7 @@ export interface LoginInfo {
     password: string;
 }
 
-export interface GetUserToken {
-    userId: string;
-    username: string;
-}
-
-export interface NewToken {
+export interface UserToken {
     userId: string;
     username: string;
 }

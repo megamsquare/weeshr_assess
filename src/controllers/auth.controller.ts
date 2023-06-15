@@ -3,9 +3,8 @@ import status_code from "http-status";
 import Model from "../models";
 import Err from "../use_cases/error_handler";
 import DB from "../db";
-import crypto from "crypto";
 import jwt from 'jsonwebtoken';
-import { NewRole, NewUser, IsRefresh, LoginInfo, GetUserToken } from "../use_cases/obj/user.case";
+import { NewRole, NewUser, IsRefresh, LoginInfo, UserToken } from "../use_cases/obj/user.case";
 import UserService from "../services/user.service";
 import RoleService from "../services/role.service";
 import AuthService from "../services/auth.service";
@@ -45,32 +44,14 @@ async function signUp(req: Request, res: Response) {
 }
 
 async function signIn(req:Request, res: Response) {
-    const userInfo: LoginInfo = req.body;
-    const isRefresh: IsRefresh = {
-        check: false,
-        refreshToken: "",
-        roles: []
-    }
-    let existingToken;
-    const tokens = Model.Tokens;
-
     try {
-        const user_model = Model.User;
-        
-        // const user = await user_model.findOne({
-        //     $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }]
-        // });
-
-        // if (!user) {
-        //     res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidUsernameOrEmail });
-        //     return;
-        // }
-
-        // const is_password = await user.compare_password(password);
-        // if (!is_password) {
-        //     res.status(status_code.BAD_REQUEST).json({ mesaage: Err.IncorrectPassword });
-        //     return
-        // }
+        const userInfo: LoginInfo = req.body;
+        const isRefresh: IsRefresh = {
+            check: false,
+            refreshToken: "",
+            roles: []
+        }
+        let existingToken;
         const user = await AuthService.loginUserCheck(userInfo);
         if (user instanceof Error) {
             res.status(status_code.BAD_REQUEST).json({ message: user.message});
@@ -80,66 +61,43 @@ async function signIn(req:Request, res: Response) {
             const roles = await RoleService.getRoleByUserId(user._id);
             isRefresh.roles = roles
 
-            const getUserToken: GetUserToken = {
+            const userToken: UserToken = {
                 userId: user._id,
                 username: user.username
             }
 
-            existingToken = await TokenService.getUserToken(getUserToken);
+            existingToken = await TokenService.getUserToken(userToken);
             if (existingToken instanceof Error) {
                 res.status(status_code.BAD_REQUEST).json({ message: existingToken.message});
             }
-            
+
             if ('_id' in existingToken) {
-                
+                isRefresh.check = true;
+                isRefresh.refreshToken = existingToken.refreshToken;
+                const access_token = await user.create_jwt(isRefresh);
+                res.status(status_code.OK).json({
+                    data: { firstName: user.firstName, lastName: user.lastName },
+                    access_token
+                });
+                return;
+            }
+
+            const savedToken = await TokenService.createToken(userToken);
+
+            if (savedToken instanceof Error) {
+                console.error(savedToken.message)
+            }
+
+            if ('_id' in savedToken) {
+                isRefresh.check = true;
+                isRefresh.refreshToken = savedToken.refreshToken;
+                const access_token = await user.create_jwt(isRefresh);
+                res.status(status_code.OK).json({
+                    data: { firstName: user.firstName, lastName: user.lastName },
+                    access_token
+                })
             }
         }
-
-        // const refresh_cache = await DB.caching.redis_client.v4.GET(user.username);
-
-        // if (refresh_cache) {
-        //     existingToken = JSON.parse(refresh_cache);
-        // } else {
-        //     existingToken = await tokens.findOne({ userId: user._id });
-        //     isCache = false;
-        // }
-
-        // if (existingToken) {
-        //     if (!isCache) {
-        //         await DB.caching.redis_client.setEx(user.username, 60*60*24, JSON.stringify(existingToken));
-        //     }
-
-        //     if (!existingToken.isValid) {
-        //         res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidToken });
-        //         return;
-        //     }
-
-        //     isRefresh.check = true;
-        //     isRefresh.refreshToken = existingToken.refreshToken;
-        //     const access_token = await user.create_jwt(isRefresh);
-        //     res.status(status_code.OK).json({
-        //         data: { firstName: user.firstName, lastName: user.lastName },
-        //         access_token
-        //     })
-        //     return;
-        // }
-
-        let refreshToken = crypto.randomBytes(40).toString('hex');
-        const userToken = {userId: user._id, refreshToken}
-
-        const savedToken = await tokens.create({...userToken});
-
-        if (savedToken) {
-            await DB.caching.redis_client.setEx(user.username, 60*60*24, JSON.stringify(savedToken));
-        }
-
-        isRefresh.check = true;
-        isRefresh.refreshToken = refreshToken;
-        const access_token = await user.create_jwt(isRefresh);
-        res.status(status_code.OK).json({
-            data: { firstName: user.firstName, lastName: user.lastName },
-            access_token
-        })
 
     } catch (error) {
         res.status(status_code.BAD_REQUEST).json({ message: error });
