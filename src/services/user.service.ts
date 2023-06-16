@@ -26,6 +26,10 @@ async function createUser(user: NewUser): Promise<IUser & {_id: Types.ObjectId} 
     }
 }
 
+async function getUserById(userId:string) {
+    
+}
+
 const UserService = {
     createUser
 }
