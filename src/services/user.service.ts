@@ -27,11 +27,22 @@ async function createUser(user: NewUser): Promise<IUser & {_id: Types.ObjectId} 
 }
 
 async function getUserById(userId:string) {
-    
+    try {
+        const userModel = Model.User;
+        const user = await userModel.findOne({ _id: userId });
+        if (!user) {
+            throw new Error(Err.UserDoesNotExists);
+        }
+
+        return user;
+    } catch (error) {
+        
+    }
 }
 
 const UserService = {
-    createUser
+    createUser,
+    getUserById
 }
 
 export default UserService;
