@@ -3,7 +3,7 @@ import DB from "../db";
 import Err from "../use_cases/error_handler";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import { LoginInfo } from "../use_cases/obj/user.case";
+import { AccessTokenCheck, LoginInfo } from "../use_cases/obj/user.case";
 
 async function loginUserCheck(loginInfo: LoginInfo) {
     try {
@@ -14,7 +14,7 @@ async function loginUserCheck(loginInfo: LoginInfo) {
         }
 
         const user = await userModel.findOne({
-            $or: [{ username: loginInfo.usernameOrEmail}, {email: loginInfo.usernameOrEmail}]
+            $or: [{ username: loginInfo.usernameOrEmail }, { email: loginInfo.usernameOrEmail }]
         })
 
         if (!user) {
@@ -29,11 +29,24 @@ async function loginUserCheck(loginInfo: LoginInfo) {
         return user;
 
     } catch (error) {
-        
+
     }
 }
 
-async function validateUserAccessToken() {
+async function validateUserAccessToken(accessToken: AccessTokenCheck) {
+    try {
+        const { header, checkExpire } = accessToken
+        if (!header || !header.startsWith('Bearer')) {
+            throw new Error(Err.Unauthentication);
+        }
+
+        let userToken = header.split(' ')[1];
+        const refreshKey = process.env.JWT_SECRET_KEY || '';
+        const payload = jwt.verify(userToken, refreshKey) as jwt.JwtPayload;
+
+    } catch (error) {
+
+    }
 }
 
 const AuthService = {
