@@ -33,12 +33,12 @@ async function loginUserCheck(loginInfo: LoginInfo) {
     }
 }
 
-async function signUp() {
+async function validateUserAccessToken() {
 }
 
 const AuthService = {
     loginUserCheck,
-    signUp
+    validateUserAccessToken
 }
 
 export default AuthService;
