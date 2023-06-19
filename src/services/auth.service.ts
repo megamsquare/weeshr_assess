@@ -4,6 +4,7 @@ import Err from "../use_cases/error_handler";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { AccessTokenCheck, LoginInfo } from "../use_cases/obj/user.case";
+import UserService from "./user.service";
 
 async function loginUserCheck(loginInfo: LoginInfo) {
     try {
@@ -43,6 +44,9 @@ async function validateUserAccessToken(accessToken: AccessTokenCheck) {
         let userToken = header.split(' ')[1];
         const refreshKey = process.env.JWT_SECRET_KEY || '';
         const payload = jwt.verify(userToken, refreshKey) as jwt.JwtPayload;
+        const user = await UserService.getUserById(payload.userId)
+
+        return user;
 
     } catch (error) {
 

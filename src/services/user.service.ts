@@ -36,7 +36,7 @@ async function getUserById(userId:string) {
 
         return user;
     } catch (error) {
-        
+        return error as Error
     }
 }
 
