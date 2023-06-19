@@ -45,7 +45,7 @@ function validateUserAccessToken(accessToken: AccessTokenCheck) {
         if (!checkExpire) {
             payload = jwt.verify(userToken, refreshKey) as jwt.JwtPayload;
         } else {
-            payload = jwt.verify(userToken, refreshKey, {clockTimestamp: new Date().getTime()}) as jwt.JwtPayload;
+            payload = jwt.verify(userToken, refreshKey, { clockTimestamp: new Date().getTime() }) as jwt.JwtPayload;
         }
 
         return payload

@@ -4,25 +4,25 @@ import Model from "../models";
 import Err from "../use_cases/error_handler";
 import DB from "../db";
 import jwt from 'jsonwebtoken';
-import { 
-    NewRole, 
-    NewUser, 
-    IsRefresh, 
-    LoginInfo, 
+import {
+    NewRole,
+    NewUser,
+    IsRefresh,
+    LoginInfo,
     UserToken,
     AccessTokenCheck
- } from "../use_cases/obj/user.case";
+} from "../use_cases/obj/user.case";
 import Services from "../services";
 
 async function signUp(req: Request, res: Response) {
-       try {
+    try {
         let userInfo: NewUser;
         let roleInfo: NewRole
         userInfo = req.body;
 
         const user = await Services.UserService.createUser(userInfo)
         if (user instanceof Error) {
-            res.status(status_code.BAD_REQUEST).json({ message: user.message});
+            res.status(status_code.BAD_REQUEST).json({ message: user.message });
             return;
         }
 
@@ -38,16 +38,16 @@ async function signUp(req: Request, res: Response) {
                 console.error(role.message);
             }
 
-            res.status(status_code.CREATED).json({ data: { message: 'User created successfully' }})
+            res.status(status_code.CREATED).json({ data: { message: 'User created successfully' } })
             return;
         }
 
-       } catch (error) {
+    } catch (error) {
         res.status(status_code.BAD_REQUEST).json({ message: error })
-       }
+    }
 }
 
-async function signIn(req:Request, res: Response) {
+async function signIn(req: Request, res: Response) {
     try {
         const userInfo: LoginInfo = req.body;
         const isRefresh: IsRefresh = {
@@ -71,7 +71,7 @@ async function signIn(req:Request, res: Response) {
 
             const existingToken = await Services.TokenService.getUserToken(userToken);
             if (existingToken instanceof Error) {
-                res.status(status_code.BAD_REQUEST).json({ message: existingToken.message, badR: "from get token"});
+                res.status(status_code.BAD_REQUEST).json({ message: existingToken.message, badR: "from get token" });
             }
 
             if (existingToken !== null && '_id' in existingToken) {
@@ -105,7 +105,7 @@ async function signIn(req:Request, res: Response) {
     }
 }
 
-async function refreshToken(req:Request, res: Response) {
+async function refreshToken(req: Request, res: Response) {
     const header = req.headers.authorization;
     let userRefresh;
     if (!header || !header.startsWith('Bearer')) {
@@ -130,12 +130,12 @@ async function refreshToken(req:Request, res: Response) {
         let isCached = true;
 
         if (payload instanceof Error) {
-            console.log()
+            console.log(`payload error: ${payload}`)
             res.status(status_code.BAD_REQUEST).json({ mesaage: payload.message });
             return;
         }
 
-        const user = await Model.User.findOne({_id: payload.userId});
+        const user = await Model.User.findOne({ _id: payload.userId });
         if (!user) {
             res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidUsernameOrEmail });
             return;
@@ -150,7 +150,7 @@ async function refreshToken(req:Request, res: Response) {
 
         if (userRefresh) {
             if (!isCached) {
-                await DB.caching.redis_client.setEx(user.username, 60*60*24, JSON.stringify(userRefresh));
+                await DB.caching.redis_client.setEx(user.username, 60 * 60 * 24, JSON.stringify(userRefresh));
             }
 
             if (!userRefresh.isValid || userRefresh.refreshToken !== payload.refresh) {
@@ -169,13 +169,18 @@ async function refreshToken(req:Request, res: Response) {
             access_token
         })
     } catch (error) {
-        res.status(status_code.BAD_REQUEST).json({ message: error });
+        console.log(`error: ${error}`)
+        if (error instanceof Error) {
+            res.status(status_code.BAD_REQUEST).json({ message: error.message });
+            return;
+        }
+        res.status(status_code.BAD_REQUEST).json({ message: error});
         return;
     }
 }
 
-async function forgot_password(req:Request, res: Response) {
-    
+async function forgot_password(req: Request, res: Response) {
+
 }
 
 const Auth_controller = {
