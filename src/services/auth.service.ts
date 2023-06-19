@@ -36,17 +36,22 @@ async function loginUserCheck(loginInfo: LoginInfo) {
 
 async function validateUserAccessToken(accessToken: AccessTokenCheck) {
     try {
-        const { header, checkExpire } = accessToken
+        const { header, checkExpire } = accessToken;
         if (!header || !header.startsWith('Bearer')) {
             throw new Error(Err.Unauthentication);
         }
 
         let userToken = header.split(' ')[1];
         const refreshKey = process.env.JWT_SECRET_KEY || '';
-        const payload = jwt.verify(userToken, refreshKey) as jwt.JwtPayload;
-        const user = await UserService.getUserById(payload.userId)
 
-        return user;
+        if (!checkExpire) {
+            const payload = jwt.verify(userToken, refreshKey) as jwt.JwtPayload;
+            const user = await UserService.getUserById(payload.userId)
+            return user;
+        } else {
+            const payload = jwt.verify(userToken, refreshKey, {clockTimestamp: new Date().getTime()}) as jwt.JwtPayload;
+            return { userId: payload.userId, role: payload.role }
+        }
 
     } catch (error) {
 
