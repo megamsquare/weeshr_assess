@@ -54,7 +54,10 @@ async function validateUserAccessToken(accessToken: AccessTokenCheck) {
         }
 
     } catch (error) {
-
+        if (error instanceof jwt.TokenExpiredError) {
+            throw new Error(error.message)
+        }
+        return error
     }
 }
 
