@@ -52,7 +52,7 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.pre('save', async function () {
     const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password as string | Buffer , salt) as string | undefined;
+    this.password = await bcrypt.hash(this.password as string | Buffer , salt) as string;
 });
 
 UserSchema.method('compare_password', async function (input_password) {
