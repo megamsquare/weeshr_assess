@@ -71,7 +71,8 @@ async function signIn(req: Request, res: Response) {
 
             const existingToken = await Services.TokenService.getUserToken(userToken);
             if (existingToken instanceof Error) {
-                res.status(status_code.BAD_REQUEST).json({ message: existingToken.message, badR: "from get token" });
+                res.status(status_code.BAD_REQUEST).json({ message: existingToken.message });
+                return;
             }
 
             if (existingToken !== null && '_id' in existingToken) {
@@ -108,73 +109,61 @@ async function signIn(req: Request, res: Response) {
 async function refreshToken(req: Request, res: Response) {
     const header = req.headers.authorization;
     let userRefresh;
-    if (!header || !header.startsWith('Bearer')) {
-        res.status(status_code.BAD_REQUEST).json({ message: Err.Unauthentication });
-        return;
-    }
-
-    let userToken = header.split(' ')[1];
-
-    const refreshKey = process.env.JWT_SECRET_KEY || '';
 
     try {
         const accessInfo: AccessTokenCheck = {
             header: header,
             checkExpire: false
-        }
-        const payload = Services.AuthService.validateUserAccessToken(accessInfo)
-        const isRefresh = {
-            check: true,
-            refreshToken: ""
         };
-        let isCached = true;
 
+        const isRefresh: IsRefresh = {
+            check: false,
+            refreshToken: "",
+            roles: []
+        };
+        
+        const payload = Services.AuthService.validateUserAccessToken(accessInfo);
         if (payload instanceof Error) {
             console.log(`payload error: ${payload}`)
             res.status(status_code.BAD_REQUEST).json({ mesaage: payload.message });
             return;
         }
 
-        const user = await Model.User.findOne({ _id: payload.userId });
-        if (!user) {
-            res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidUsernameOrEmail });
-            return;
-        }
-        const refreshCache = await DB.caching.redis_client.v4.GET(payload.username);
-        if (refreshCache) {
-            userRefresh = JSON.parse(refreshCache);
-        } else {
-            userRefresh = await Model.Tokens.findOne({ userId: payload.userId });
-            isCached = false;
-        }
-
-        if (userRefresh) {
-            if (!isCached) {
-                await DB.caching.redis_client.setEx(user.username, 60 * 60 * 24, JSON.stringify(userRefresh));
-            }
-
-            if (!userRefresh.isValid || userRefresh.refreshToken !== payload.refresh) {
-                res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidToken });
-                return;
-            }
-        } else {
-            res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidToken });
+        const user = await Services.UserService.getUserById(payload.userId);
+        if (user instanceof Error) {
+            res.status(status_code.BAD_REQUEST).json({ mesaage: user.message });
             return;
         }
 
-        isRefresh.refreshToken = userRefresh.refreshToken;
-        const access_token = await user.create_jwt(isRefresh);
-        res.status(status_code.OK).json({
-            data: { firstName: user.firstName, lastName: user.lastName },
-            access_token
-        })
+        const userToken: UserToken = {
+            userId: user._id,
+            username: user.username,
+        }
+
+        const roles = await Services.RoleService.getRoleByUserId(user._id);
+        const existingToken = await Services.TokenService.getUserToken(userToken);
+        if (existingToken instanceof Error) {
+            res.status(status_code.BAD_REQUEST).json({ message: existingToken.message });
+            return;
+        }
+
+        if (existingToken !== null && '_id' in existingToken) {
+            isRefresh.check = true;
+            isRefresh.refreshToken = existingToken.refreshToken;
+            const accessToken = await user.create_jwt(isRefresh);
+            res.status(status_code.OK).json({
+                data: { firstName: user.firstName, lastName: user.lastName },
+                accessToken
+            });
+            return;
+        }
     } catch (error) {
         console.log(`error: ${error}`)
         if (error instanceof Error) {
             res.status(status_code.BAD_REQUEST).json({ message: error.message });
             return;
         }
-        res.status(status_code.BAD_REQUEST).json({ message: error});
+        res.status(status_code.BAD_REQUEST).json({ message: Err.InvalidToken});
         return;
     }
 }
