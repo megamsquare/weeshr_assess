@@ -9,7 +9,7 @@ interface UserRequest extends Request {
     user?: { userId: string; role: string[] }
 }
 
-function verify_token(req: UserRequest, res: Response, next: NextFunction) {
+function verifyToken(req: UserRequest, res: Response, next: NextFunction) {
     const header = req.headers.authorization;
 
     try {
@@ -33,7 +33,7 @@ function verify_token(req: UserRequest, res: Response, next: NextFunction) {
     }
 }
 
-function verify_permission(roles: string[] = []) {
+function verifyPermission(roles: string[] = []) {
     return (req: UserRequest, res: Response, next: NextFunction) => {
         const user_role = req.user?.role || [];
         const has_permission = roles.some(role => user_role.includes(role))
@@ -44,3 +44,10 @@ function verify_permission(roles: string[] = []) {
         next();
     };
 }
+
+const AuthMiddleware = {
+    verifyToken,
+    verifyPermission
+}
+
+export default AuthMiddleware;
