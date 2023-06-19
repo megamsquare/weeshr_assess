@@ -130,11 +130,11 @@ async function refreshToken(req:Request, res: Response) {
         let isCached = true;
 
         if (payload instanceof Error) {
+            console.log()
             res.status(status_code.BAD_REQUEST).json({ mesaage: payload.message });
             return;
         }
-        // const payload = jwt.verify(userToken, refreshKey, {clockTimestamp: new Date().getTime()}) as jwt.JwtPayload;
-        // const payload = jwt.verify(userToken, refreshKey) as jwt.JwtPayload;
+
         const user = await Model.User.findOne({_id: payload.userId});
         if (!user) {
             res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidUsernameOrEmail });
