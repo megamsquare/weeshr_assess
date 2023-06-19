@@ -2,32 +2,32 @@ import { Request, Response, NextFunction } from "express";
 import status_code from "http-status";
 import Err from "../use_cases/error_handler";
 import jwt from "jsonwebtoken";
+import AuthService from "../services/auth.service";
+import { AccessTokenCheck } from "../use_cases/obj/user.case";
 
 interface UserRequest extends Request {
     user?: { userId: string; role: string[] }
 }
 
 function verify_token(req: UserRequest, res: Response, next: NextFunction) {
-    let token;
-    const jwt_key = process.env.JWT_SECRET_KEY || ''
     const header = req.headers.authorization;
-    if (!header || !header.startsWith('Bearer')) {
-        res.status(status_code.UNAUTHORIZED).json({ message: Err.Unauthentication });
-        return;
-    }
-
-    token = header.split(' ')[1];
 
     try {
-        const payload = jwt.verify(token, jwt_key, {clockTimestamp: new Date().getTime()}) as jwt.JwtPayload;
-
-        req.user = { userId: payload.userId, role: payload.role }
-        next();
-    } catch (error) {
-        if (error instanceof jwt.TokenExpiredError) {
-            res.status(status_code.UNAUTHORIZED).json({ message: error.message });
+        const accessInfo: AccessTokenCheck = {
+            header: header,
+            checkExpire: true
+        }
+        const payloadL = AuthService.validateUserAccessToken(accessInfo)
+        if (payloadL instanceof Error) {
+            res.status(status_code.UNAUTHORIZED).json({ message: payloadL.message });
             return;
         }
+
+        if ('userId' in payloadL && 'role' in payloadL) {
+            req.user = { userId: payloadL.userId as string, role: payloadL.role as string[] }
+        }
+        next();
+    } catch (error) {
         res.status(status_code.UNAUTHORIZED).json({ message: Err.Unauthentication });
         return
     }

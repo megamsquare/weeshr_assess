@@ -37,6 +37,7 @@ async function loginUserCheck(loginInfo: LoginInfo) {
 async function validateUserAccessToken(accessToken: AccessTokenCheck) {
     try {
         const { header, checkExpire } = accessToken;
+        let payload: jwt.JwtPayload;
         if (!header || !header.startsWith('Bearer')) {
             throw new Error(Err.Unauthentication);
         }
@@ -45,19 +46,18 @@ async function validateUserAccessToken(accessToken: AccessTokenCheck) {
         const refreshKey = process.env.JWT_SECRET_KEY || '';
 
         if (!checkExpire) {
-            const payload = jwt.verify(userToken, refreshKey) as jwt.JwtPayload;
-            const user = await UserService.getUserById(payload.userId)
-            return user;
+            payload = jwt.verify(userToken, refreshKey) as jwt.JwtPayload;
         } else {
-            const payload = jwt.verify(userToken, refreshKey, {clockTimestamp: new Date().getTime()}) as jwt.JwtPayload;
-            return { userId: payload.userId, role: payload.role }
+            payload = jwt.verify(userToken, refreshKey, {clockTimestamp: new Date().getTime()}) as jwt.JwtPayload;
         }
+
+        return payload
 
     } catch (error) {
         if (error instanceof jwt.TokenExpiredError) {
             throw new Error(error.message)
         }
-        return error
+        return error as Error
     }
 }
 
