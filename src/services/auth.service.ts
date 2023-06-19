@@ -31,7 +31,7 @@ async function loginUserCheck(loginInfo: LoginInfo) {
     }
 }
 
-async function validateUserAccessToken(accessToken: AccessTokenCheck) {
+function validateUserAccessToken(accessToken: AccessTokenCheck) {
     try {
         const { header, checkExpire } = accessToken;
         let payload: jwt.JwtPayload;

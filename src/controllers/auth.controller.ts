@@ -9,7 +9,8 @@ import {
     NewUser, 
     IsRefresh, 
     LoginInfo, 
-    UserToken
+    UserToken,
+    AccessTokenCheck
  } from "../use_cases/obj/user.case";
 import Services from "../services";
 
@@ -117,13 +118,23 @@ async function refreshToken(req:Request, res: Response) {
     const refreshKey = process.env.JWT_SECRET_KEY || '';
 
     try {
+        const accessInfo: AccessTokenCheck = {
+            header: header,
+            checkExpire: false
+        }
+        const payload = Services.AuthService.validateUserAccessToken(accessInfo)
         const isRefresh = {
             check: true,
             refreshToken: ""
         };
         let isCached = true;
+
+        if (payload instanceof Error) {
+            res.status(status_code.BAD_REQUEST).json({ mesaage: payload.message });
+            return;
+        }
         // const payload = jwt.verify(userToken, refreshKey, {clockTimestamp: new Date().getTime()}) as jwt.JwtPayload;
-        const payload = jwt.verify(userToken, refreshKey) as jwt.JwtPayload;
+        // const payload = jwt.verify(userToken, refreshKey) as jwt.JwtPayload;
         const user = await Model.User.findOne({_id: payload.userId});
         if (!user) {
             res.status(status_code.BAD_REQUEST).json({ mesaage: Err.InvalidUsernameOrEmail });

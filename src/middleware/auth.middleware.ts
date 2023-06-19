@@ -17,14 +17,14 @@ function verifyToken(req: UserRequest, res: Response, next: NextFunction) {
             header: header,
             checkExpire: true
         }
-        const payloadL = AuthService.validateUserAccessToken(accessInfo)
-        if (payloadL instanceof Error) {
-            res.status(status_code.UNAUTHORIZED).json({ message: payloadL.message });
+        const payload = AuthService.validateUserAccessToken(accessInfo)
+        if (payload instanceof Error) {
+            res.status(status_code.UNAUTHORIZED).json({ message: payload.message });
             return;
         }
 
-        if ('userId' in payloadL && 'role' in payloadL) {
-            req.user = { userId: payloadL.userId as string, role: payloadL.role as string[] }
+        if ('userId' in payload && 'role' in payload) {
+            req.user = { userId: payload.userId as string, role: payload.role as string[] }
         }
         next();
     } catch (error) {
