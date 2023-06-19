@@ -47,7 +47,7 @@ function verifyPermission(roles: string[] = []) {
 
 const AuthMiddleware = {
     verifyToken,
-    verifyPermission
+    verifyPermission,
 }
 
 export default AuthMiddleware;
