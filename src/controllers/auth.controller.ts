@@ -1,9 +1,6 @@
 import { Request, Response } from "express";
 import status_code from "http-status";
-import Model from "../models";
 import Err from "../use_cases/error_handler";
-import DB from "../db";
-import jwt from 'jsonwebtoken';
 import {
     NewRole,
     NewUser,
