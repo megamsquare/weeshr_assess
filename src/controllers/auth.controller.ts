@@ -108,7 +108,6 @@ async function signIn(req: Request, res: Response) {
 
 async function refreshToken(req: Request, res: Response) {
     const header = req.headers.authorization;
-    let userRefresh;
 
     try {
         const accessInfo: AccessTokenCheck = {
@@ -124,7 +123,6 @@ async function refreshToken(req: Request, res: Response) {
         
         const payload = Services.AuthService.validateUserAccessToken(accessInfo);
         if (payload instanceof Error) {
-            console.log(`payload error: ${payload}`)
             res.status(status_code.BAD_REQUEST).json({ mesaage: payload.message });
             return;
         }
@@ -141,6 +139,7 @@ async function refreshToken(req: Request, res: Response) {
         }
 
         const roles = await Services.RoleService.getRoleByUserId(user._id);
+        isRefresh.roles = roles;
         const existingToken = await Services.TokenService.getUserToken(userToken);
         if (existingToken instanceof Error) {
             res.status(status_code.BAD_REQUEST).json({ message: existingToken.message });
