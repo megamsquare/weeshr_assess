@@ -142,7 +142,7 @@ async function refreshToken(req: Request, res: Response) {
         isRefresh.roles = roles;
         const existingToken = await Services.TokenService.getUserToken(userToken);
         if (existingToken instanceof Error) {
-            res.status(status_code.BAD_REQUEST).json({ message: existingToken.message });
+            res.status(status_code.UNAUTHORIZED).json({ message: existingToken.message });
             return;
         }
 
@@ -159,7 +159,7 @@ async function refreshToken(req: Request, res: Response) {
     } catch (error) {
         console.log(`error: ${error}`)
         if (error instanceof Error) {
-            res.status(status_code.BAD_REQUEST).json({ message: error.message });
+            res.status(status_code.UNAUTHORIZED).json({ message: error.message });
             return;
         }
         res.status(status_code.BAD_REQUEST).json({ message: Err.InvalidToken});
