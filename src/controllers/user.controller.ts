@@ -46,6 +46,7 @@ async function getUserByEmail(req: Request, res: Response) {
 
 const User_controller = {
     createUser,
+    updateUser
 };
 
 export default User_controller;
