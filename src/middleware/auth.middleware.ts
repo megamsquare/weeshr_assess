@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import status_code from "http-status";
 import Err from "../use_cases/error_handler";
-import jwt from "jsonwebtoken";
 import AuthService from "../services/auth.service";
 import { AccessTokenCheck } from "../use_cases/obj/user.case";
 
