@@ -44,9 +44,9 @@ async function getUserByUsername(req: Request, res: Response) {
 async function getUserByEmail(req: Request, res: Response) {
 }
 
-const User_controller = {
+const UserController = {
     createUser,
     updateUser
 };
 
-export default User_controller;
+export default UserController;
