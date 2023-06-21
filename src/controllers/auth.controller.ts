@@ -154,7 +154,6 @@ async function refreshToken(req: Request, res: Response) {
             return;
         }
     } catch (error) {
-        console.log(`error: ${error}`)
         if (error instanceof Error) {
             res.status(status_code.UNAUTHORIZED).json({ message: error.message });
             return;
