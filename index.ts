@@ -7,7 +7,7 @@ import rate_limit from 'express-rate-limit';
 import db from './src/db';
 import routers from './src/routes';
 
-import not_found from './src/middleware/not_found.middleware';
+import Middleware from './src/middleware';
 
 
 const port = process.env.HTTP_PORT || 3001;
@@ -33,7 +33,7 @@ app.use(helmet());
 
 // Routers
 app.use('/api', routers)
-app.use(not_found)
+app.use(Middleware.NotFoundMiddleware)
 
 async function start() {
     try {
