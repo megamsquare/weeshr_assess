@@ -30,23 +30,18 @@ async function createUser(req: Request, res: Response) {
 }
 
 async function updateUser(req: Request, res: Response) {
-
 }
 
 async function getUserById(req: Request, res: Response) {
-
 }
 
 async function getAllUser(req: Request, res: Response) {
-
 }
 
 async function getUserByUsername(req: Request, res: Response) {
-
 }
 
 async function getUserByEmail(req: Request, res: Response) {
-
 }
 
 const User_controller = {
