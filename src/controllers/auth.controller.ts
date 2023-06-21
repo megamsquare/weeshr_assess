@@ -58,7 +58,7 @@ async function signIn(req: Request, res: Response) {
         }
 
         if (user !== undefined && '_id' in user) {
-            const roles = await Services.RoleService.getRoleByUserId(user._id);
+            const roles = await Services.RoleService.getRolesByUserId(user._id);
             isRefresh.roles = roles
 
             const userToken: UserToken = {
@@ -135,7 +135,7 @@ async function refreshToken(req: Request, res: Response) {
             username: user.username,
         }
 
-        const roles = await Services.RoleService.getRoleByUserId(user._id);
+        const roles = await Services.RoleService.getRolesByUserId(user._id);
         isRefresh.roles = roles;
         const existingToken = await Services.TokenService.getUserToken(userToken);
         if (existingToken instanceof Error) {

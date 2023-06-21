@@ -5,7 +5,7 @@ async function createRole(role: NewRole) {
     try {
         const roleModel = Model.Roles;
 
-        const roles = await getRoleByUserId(role.userId);
+        const roles = await getRolesByUserId(role.userId);
 
         const isRoleExist = roles?.includes(role.role);
         if (isRoleExist) {
@@ -37,7 +37,7 @@ async function getRoleById(id: string) {
     }
 }
 
-async function getRoleByUserId(userId: string) {
+async function getRolesByUserId(userId: string) {
     try {
         const roleModel = Model.Roles;
 
@@ -53,7 +53,7 @@ async function getRoleByUserId(userId: string) {
 const RoleService = {
     createRole,
     getRoleById,
-    getRoleByUserId
+    getRolesByUserId
 }
 
 export default RoleService;
