@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import status_code from "http-status";
-import Model from "../models";
 import { NewUser } from "../use_cases/obj/user.case";
 import Services from "../services";
 
@@ -51,6 +50,7 @@ async function getUserByEmail(req: Request, res: Response) {
 }
 
 const User_controller = {
+    createUser,
 };
 
 export default User_controller;
