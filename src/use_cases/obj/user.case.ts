@@ -1,3 +1,5 @@
+import { Request } from "express";
+
 export interface NewUser {
     firstName: string;
     lastName: string;
@@ -30,4 +32,8 @@ export interface UserToken {
 export interface AccessTokenCheck {
     header: string | undefined;
     checkExpire: boolean;
+}
+
+export interface UserRequest extends Request {
+    user?: { userId: string; role: string[] }
 }

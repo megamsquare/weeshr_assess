@@ -1,12 +1,10 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import status_code from "http-status";
 import Err from "../use_cases/error_handler";
 import AuthService from "../services/auth.service";
-import { AccessTokenCheck } from "../use_cases/obj/user.case";
+import { AccessTokenCheck, UserRequest } from "../use_cases/obj/user.case";
 
-interface UserRequest extends Request {
-    user?: { userId: string; role: string[] }
-}
+
 
 function verifyToken(req: UserRequest, res: Response, next: NextFunction) {
     const header = req.headers.authorization;
