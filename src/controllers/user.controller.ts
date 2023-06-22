@@ -35,7 +35,7 @@ async function updateUser(req: Request, res: Response) {
 async function getUserById(req: Request, res: Response) {
 }
 
-async function getAllUser(req: Request, res: Response) {
+async function getAllUsers(req: Request, res: Response) {
 }
 
 async function getUserByUsername(req: Request, res: Response) {
@@ -46,7 +46,11 @@ async function getUserByEmail(req: Request, res: Response) {
 
 const UserController = {
     createUser,
-    updateUser
+    updateUser,
+    getUserById,
+    getUserByEmail,
+    getUserByUsername,
+    getAllUsers
 };
 
 export default UserController;
