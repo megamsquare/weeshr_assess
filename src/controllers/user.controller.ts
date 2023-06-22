@@ -30,6 +30,8 @@ async function createUser(req: Request, res: Response) {
 }
 
 async function updateUser(req: Request, res: Response) {
+    console.log(req.params.userId)
+    res.status(status_code.OK).json({})
 }
 
 async function getUserById(req: Request, res: Response) {
