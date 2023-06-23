@@ -30,8 +30,16 @@ async function createUser(req: Request, res: Response) {
 }
 
 async function updateUser(req: Request, res: Response) {
-    console.log(req.params.userId)
-    res.status(status_code.OK).json({})
+    try {
+        const userId = req.query.userId as string;
+
+        let userInfo = await Services.UserService.getUserById(userId)
+        console.log("user Information", userInfo)
+        res.status(status_code.OK).json({ success: userInfo})
+        return
+    } catch (error) {
+        
+    }
 }
 
 async function getUserById(req: Request, res: Response) {
