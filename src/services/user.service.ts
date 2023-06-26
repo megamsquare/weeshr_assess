@@ -44,7 +44,7 @@ async function updateUser(userInfo: UpdateUser) {
     
 }
 
-async function changeUserPassword() {
+async function changeUserPassword(password: string) {
     
 }
 
