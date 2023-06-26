@@ -44,9 +44,14 @@ async function updateUser() {
     
 }
 
+async function changeUserPassword() {
+    
+}
+
 const UserService = {
     createUser,
-    getUserById
+    getUserById,
+    updateUser
 }
 
 export default UserService;
