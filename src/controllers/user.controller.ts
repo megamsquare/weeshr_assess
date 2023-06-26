@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import status_code from "http-status";
-import { NewUser } from "../use_cases/obj/user.case";
+import { NewUser, UpdateUser } from "../use_cases/obj/user.case";
 import Services from "../services";
 
 async function createUser(req: Request, res: Response) {
@@ -31,9 +31,10 @@ async function createUser(req: Request, res: Response) {
 
 async function updateUser(req: Request, res: Response) {
     try {
-        const userId = req.query.userId as string;
+        const userId = req.query.userId;
 
-        let userInfo = await Services.UserService.getUserById(userId)
+        const userInfo: UpdateUser = req.body;
+
         console.log("user Information", userInfo)
         res.status(status_code.OK).json({ success: userInfo})
         return
