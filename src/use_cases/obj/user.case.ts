@@ -37,3 +37,10 @@ export interface AccessTokenCheck {
 export interface UserRequest extends Request {
     user?: { userId: string; role: string[] }
 }
+
+export interface UpdateUser {
+    firstName: string,
+    lastName: string,
+    email: string,
+    username: string
+}
