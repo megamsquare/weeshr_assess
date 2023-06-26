@@ -60,7 +60,7 @@ const UserController = {
     getUserById,
     getUserByEmail,
     getUserByUsername,
-    getAllUsers
+    getAllUsers,
 };
 
 export default UserController;
