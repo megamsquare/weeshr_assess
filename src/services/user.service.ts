@@ -40,6 +40,10 @@ async function getUserById(userId:string) {
     }
 }
 
+async function updateUser() {
+    
+}
+
 const UserService = {
     createUser,
     getUserById
