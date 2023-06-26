@@ -38,7 +38,7 @@ async function updateUser(req: Request, res: Response) {
         res.status(status_code.OK).json({ success: userInfo})
         return
     } catch (error) {
-        
+        res.status(status_code.BAD_REQUEST).json({ message: error })
     }
 }
 
