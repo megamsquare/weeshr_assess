@@ -1,4 +1,4 @@
-import { NewUser } from "../use_cases/obj/user.case";
+import { NewUser, UpdateUser } from "../use_cases/obj/user.case";
 import Model from "../models";
 import Err from "../use_cases/error_handler";
 import { IUser } from "../models/users.model";
@@ -40,7 +40,7 @@ async function getUserById(userId:string) {
     }
 }
 
-async function updateUser() {
+async function updateUser(userInfo: UpdateUser) {
     
 }
 
