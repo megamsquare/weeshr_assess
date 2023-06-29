@@ -14,6 +14,7 @@ const Err = {
     RefreshTokenExists: 'Refresh Token Does Not Exist',
     RefreshTokenInvalid: 'Refresh Token is Invalid',
     InvalidToken: 'Your token is not valid',
+    InvalidUserId: 'Invalid User Id',
 }
 
 export default Err;

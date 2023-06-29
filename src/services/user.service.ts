@@ -41,7 +41,9 @@ async function getUserById(userId:string) {
 }
 
 async function updateUser(userInfo: UpdateUser) {
-    
+    if(!userInfo.userId || userInfo.userId === "") {
+        throw new Error("");
+    }
 }
 
 async function changeUserPassword(password: string) {
