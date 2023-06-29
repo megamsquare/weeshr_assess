@@ -4,7 +4,7 @@ import Err from "../use_cases/error_handler";
 import { IUser } from "../models/users.model";
 import { Types } from "mongoose";
 
-async function createUser(user: NewUser): Promise<IUser & {_id: Types.ObjectId} | Error> {
+async function createUser(user: NewUser): Promise<IUser & { _id: Types.ObjectId } | Error> {
     try {
         const userModel = Model.User;
 
@@ -26,7 +26,7 @@ async function createUser(user: NewUser): Promise<IUser & {_id: Types.ObjectId} 
     }
 }
 
-async function getUserById(userId:string) {
+async function getUserById(userId: string) {
     try {
         const userModel = Model.User;
         const user = await userModel.findOne({ _id: userId });
@@ -41,13 +41,20 @@ async function getUserById(userId:string) {
 }
 
 async function updateUser(userInfo: UpdateUser) {
-    if(!userInfo.userId || userInfo.userId === "") {
+    if (!userInfo.userId || userInfo.userId === "") {
         throw new Error("");
     }
+
+    const userModel = Model.User;
+    const user = await userModel.findOneAndUpdate(
+        {_id: userInfo.userId},
+        {},
+        {new : true}
+    );
 }
 
 async function changeUserPassword(password: string) {
-    
+
 }
 
 const UserService = {
