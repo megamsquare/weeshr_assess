@@ -41,16 +41,26 @@ async function getUserById(userId: string) {
 }
 
 async function updateUser(userInfo: UpdateUser) {
-    if (!userInfo.userId || userInfo.userId === "") {
-        throw new Error("");
-    }
+    try {
+        if (!userInfo.userId || userInfo.userId === "") {
+            throw new Error("");
+        }
 
-    const userModel = Model.User;
-    const user = await userModel.findOneAndUpdate(
-        {_id: userInfo.userId},
-        {},
-        {new : true}
-    );
+        const update = {
+            firstName: userInfo.firstName,
+            lastName: userInfo.lastName,
+            email: userInfo.email,
+            username: userInfo.username
+        }
+        const userModel = Model.User;
+        const user = await userModel.findOneAndUpdate(
+            { _id: userInfo.userId },
+            update,
+            { new: true }
+        );
+    } catch (error) {
+        return error as Error;
+    }
 }
 
 async function changeUserPassword(password: string) {
