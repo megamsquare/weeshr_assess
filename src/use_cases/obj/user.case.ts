@@ -39,8 +39,9 @@ export interface UserRequest extends Request {
 }
 
 export interface UpdateUser {
-    firstName: string,
-    lastName: string,
-    email: string,
-    username: string
+    userId: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    username: string;
 }
