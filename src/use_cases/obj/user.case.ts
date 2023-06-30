@@ -35,7 +35,7 @@ export interface AccessTokenCheck {
 }
 
 export interface UserRequest extends Request {
-    user?: { userId: string; role: string[] }
+    user?: { userId: string; role: string[] };
 }
 
 export interface UpdateUser {
@@ -44,4 +44,9 @@ export interface UpdateUser {
     lastName: string;
     email: string;
     username: string;
+}
+
+export interface UpdatePassword {
+    userId: string;
+    password: string;
 }

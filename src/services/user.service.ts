@@ -66,7 +66,7 @@ async function updateUser(userInfo: UpdateUser) {
 }
 
 async function changeUserPassword(password: string) {
-
+    
 }
 
 const UserService = {
