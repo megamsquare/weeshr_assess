@@ -43,7 +43,7 @@ async function getUserById(userId: string) {
 async function updateUser(userInfo: UpdateUser) {
     try {
         if (!userInfo.userId || userInfo.userId === "") {
-            throw new Error("");
+            throw new Error(Err.InvalidUserId);
         }
 
         const update = {
@@ -58,6 +58,8 @@ async function updateUser(userInfo: UpdateUser) {
             update,
             { new: true }
         );
+
+        return user;
     } catch (error) {
         return error as Error;
     }
