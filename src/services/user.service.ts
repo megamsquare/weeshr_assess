@@ -71,7 +71,7 @@ async function changeUserPassword(updatePassword: UpdatePassword) {
     }
 
     const update = {
-        password: ""
+        password: updatePassword.password
     }
 }
 
