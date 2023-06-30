@@ -70,7 +70,9 @@ async function changeUserPassword(updatePassword: UpdatePassword) {
         throw new Error(Err.InvalidUserId);
     }
 
-    const update = {}
+    const update = {
+        password: ""
+    }
 }
 
 const UserService = {
