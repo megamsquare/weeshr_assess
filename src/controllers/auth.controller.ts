@@ -3,13 +3,13 @@ import status_code from "http-status";
 import Err from "../use_cases/error_handler";
 import {
     NewUser,
-    IsRefresh,
     LoginInfo,
     UserToken,
     AccessTokenCheck
 } from "../use_cases/obj/user.case";
 import Services from "../services";
 import { NewRole } from "../use_cases/obj/role.case";
+import { IsRefresh } from "../use_cases/obj/auth.case";
 
 async function signUp(req: Request, res: Response) {
     try {
