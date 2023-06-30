@@ -1,4 +1,4 @@
-import { NewUser, UpdateUser } from "../use_cases/obj/user.case";
+import { NewUser, UpdatePassword, UpdateUser } from "../use_cases/obj/user.case";
 import Model from "../models";
 import Err from "../use_cases/error_handler";
 import { IUser } from "../models/users.model";
@@ -65,8 +65,12 @@ async function updateUser(userInfo: UpdateUser) {
     }
 }
 
-async function changeUserPassword(password: string) {
-    
+async function changeUserPassword(updatePassword: UpdatePassword) {
+    if (!updatePassword.userId || updatePassword.userId === "") {
+        throw new Error(Err.InvalidUserId);
+    }
+
+    const update = {}
 }
 
 const UserService = {
