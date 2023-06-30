@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import status_code from "http-status";
 import Err from "../use_cases/error_handler";
 import {
-    NewRole,
     NewUser,
     IsRefresh,
     LoginInfo,
@@ -10,6 +9,7 @@ import {
     AccessTokenCheck
 } from "../use_cases/obj/user.case";
 import Services from "../services";
+import { NewRole } from "../use_cases/obj/role.case";
 
 async function signUp(req: Request, res: Response) {
     try {
