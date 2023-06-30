@@ -62,6 +62,8 @@ async function forgetPassword(forgottenPassword:ForgottenPassword) {
     if (!forgottenPassword.email || forgottenPassword.email === "") {
         throw new Error(Err.InvalidEmail);
     }
+
+    
 }
 
 const AuthService = {
