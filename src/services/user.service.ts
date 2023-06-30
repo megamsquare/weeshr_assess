@@ -53,13 +53,13 @@ async function updateUser(userInfo: UpdateUser) {
             username: userInfo.username
         }
         const userModel = Model.User;
-        const user = await userModel.findOneAndUpdate(
+        const userUpdate = await userModel.findOneAndUpdate(
             { _id: userInfo.userId },
             update,
             { new: true }
         );
 
-        return user;
+        return userUpdate;
     } catch (error) {
         return error as Error;
     }
@@ -73,6 +73,15 @@ async function changeUserPassword(updatePassword: UpdatePassword) {
     const update = {
         password: updatePassword.password
     }
+
+    const userModel = Model.User;
+    const passwordUpdate = await userModel.findOneAndUpdate(
+        { _id: updatePassword.userId},
+        update,
+        {new :true}
+    )
+
+    return passwordUpdate;
 }
 
 const UserService = {
