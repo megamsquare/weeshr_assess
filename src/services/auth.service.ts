@@ -63,7 +63,24 @@ async function forgetPassword(forgottenPassword:ForgottenPassword) {
         throw new Error(Err.InvalidEmail);
     }
 
-    
+    const userModel = Model.User;
+
+    const user = await userModel.findOne({ email: forgottenPassword.email });
+
+    if (!user) {
+        throw new Error(Err.UserDoesNotExists)
+    }
+
+    const isPassword = await user.compare_password(forgottenPassword.oldPassword);
+    if (!isPassword) {
+        throw new Error(Err.IncorrectPassword);
+    }
+
+    user.password = forgottenPassword.newPassword;
+
+    await user.save();
+
+    return user;
 }
 
 const AuthService = {
