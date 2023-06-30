@@ -1,5 +1,5 @@
 import Model from "../models";
-import { NewRole } from "../use_cases/obj/user.case";
+import { NewRole } from "../use_cases/obj/role.case";
 
 async function createRole(role: NewRole) {
     try {

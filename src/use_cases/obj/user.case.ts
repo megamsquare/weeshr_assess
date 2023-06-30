@@ -8,11 +8,6 @@ export interface NewUser {
     password: string;
 }
 
-export interface NewRole {
-    userId: string;
-    role: string;
-}
-
 export interface IsRefresh {
     check: boolean;
     refreshToken: string;
