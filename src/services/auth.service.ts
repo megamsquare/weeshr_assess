@@ -1,7 +1,7 @@
 import Model from "../models";
 import Err from "../use_cases/error_handler";
 import jwt from "jsonwebtoken";
-import { AccessTokenCheck, LoginInfo } from "../use_cases/obj/user.case";
+import { AccessTokenCheck, ForgottenPassword, LoginInfo } from "../use_cases/obj/user.case";
 
 async function loginUserCheck(loginInfo: LoginInfo) {
     try {
@@ -55,6 +55,12 @@ function validateUserAccessToken(accessToken: AccessTokenCheck) {
             throw new Error(error.message)
         }
         return error as Error
+    }
+}
+
+async function forgetPassword(forgottenPassword:ForgottenPassword) {
+    if (!forgottenPassword.email || forgottenPassword.email === "") {
+        throw new Error(Err.InvalidEmail);
     }
 }
 

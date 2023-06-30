@@ -51,8 +51,8 @@ export interface UpdatePassword {
     password: string;
 }
 
-export interface forgottenPassword {
-    userId: string;
+export interface ForgottenPassword {
+    email: string;
     oldPassword: string;
     newPassword: string;
 }
