@@ -24,9 +24,3 @@ export interface UpdatePassword {
     userId: string;
     password: string;
 }
-
-export interface ForgottenPassword {
-    email: string;
-    oldPassword: string;
-    newPassword: string;
-}
