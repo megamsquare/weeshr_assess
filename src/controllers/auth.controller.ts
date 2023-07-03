@@ -1,15 +1,10 @@
 import { Request, Response } from "express";
 import status_code from "http-status";
 import Err from "../use_cases/error_handler";
-import {
-    NewUser,
-    LoginInfo,
-    UserToken,
-    AccessTokenCheck
-} from "../use_cases/obj/user.case";
+import { NewUser } from "../use_cases/obj/user.case";
 import Services from "../services";
 import { NewRole } from "../use_cases/obj/role.case";
-import { IsRefresh } from "../use_cases/obj/auth.case";
+import { AccessTokenCheck, IsRefresh, LoginInfo, UserToken } from "../use_cases/obj/auth.case";
 
 async function signUp(req: Request, res: Response) {
     try {
@@ -117,7 +112,7 @@ async function refreshToken(req: Request, res: Response) {
             refreshToken: "",
             roles: []
         };
-        
+
         const payload = Services.AuthService.validateUserAccessToken(accessInfo);
         if (payload instanceof Error) {
             res.status(status_code.BAD_REQUEST).json({ mesaage: payload.message });
@@ -158,7 +153,7 @@ async function refreshToken(req: Request, res: Response) {
             res.status(status_code.UNAUTHORIZED).json({ message: error.message });
             return;
         }
-        res.status(status_code.BAD_REQUEST).json({ message: Err.InvalidToken});
+        res.status(status_code.BAD_REQUEST).json({ message: Err.InvalidToken });
         return;
     }
 }
