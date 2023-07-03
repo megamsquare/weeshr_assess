@@ -1,7 +1,7 @@
 import Model from "../models";
 import Err from "../use_cases/error_handler";
 import jwt from "jsonwebtoken";
-import { AccessTokenCheck, ForgottenPassword, LoginInfo } from "../use_cases/obj/user.case";
+import { LoginInfo, AccessTokenCheck, ForgottenPassword } from "../use_cases/obj/auth.case";
 
 async function loginUserCheck(loginInfo: LoginInfo) {
     try {
