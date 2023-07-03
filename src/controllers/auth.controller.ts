@@ -4,7 +4,8 @@ import Err from "../use_cases/error_handler";
 import { NewUser } from "../use_cases/obj/user.case";
 import Services from "../services";
 import { NewRole } from "../use_cases/obj/role.case";
-import { AccessTokenCheck, IsRefresh, LoginInfo, UserToken } from "../use_cases/obj/auth.case";
+import { AccessTokenCheck, IsRefresh, LoginInfo } from "../use_cases/obj/auth.case";
+import { UserToken } from "../use_cases/obj/token.case";
 
 async function signUp(req: Request, res: Response) {
     try {
