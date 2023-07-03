@@ -13,3 +13,8 @@ export interface UserToken {
     userId: string;
     username: string;
 }
+
+export interface AccessTokenCheck {
+    header: string | undefined;
+    checkExpire: boolean;
+}

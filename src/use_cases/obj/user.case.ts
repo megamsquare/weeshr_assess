@@ -8,11 +8,6 @@ export interface NewUser {
     password: string;
 }
 
-export interface AccessTokenCheck {
-    header: string | undefined;
-    checkExpire: boolean;
-}
-
 export interface UserRequest extends Request {
     user?: { userId: string; role: string[] };
 }
