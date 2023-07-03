@@ -1,8 +1,8 @@
 import Model from "../models";
-import { UserToken } from "../use_cases/obj/user.case";
 import DB from "../db";
 import Err from "../use_cases/error_handler";
 import crypto from "crypto";
+import { UserToken } from "../use_cases/obj/token.case";
 
 async function createToken(userInfo: UserToken) {
     try {
