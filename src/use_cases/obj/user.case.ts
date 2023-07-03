@@ -8,11 +8,6 @@ export interface NewUser {
     password: string;
 }
 
-export interface LoginInfo {
-    usernameOrEmail: string;
-    password: string;
-}
-
 export interface UserToken {
     userId: string;
     username: string;
