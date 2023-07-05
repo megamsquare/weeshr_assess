@@ -1,3 +1,5 @@
+import NodeMailer from 'nodemailer'
+
 async function sendEmail(email:string) {
     
 }
