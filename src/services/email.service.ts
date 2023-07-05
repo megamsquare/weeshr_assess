@@ -1,4 +1,5 @@
-import nodeMailer from 'nodemailer'
+import nodeMailer from 'nodemailer';
+import Mailgen from 'mailgen';
 
 async function emailTransport() {
     const email = process.env.EMAIL || '';
@@ -20,6 +21,13 @@ async function emailTransport() {
 }
 
 async function sendEmail(email:string) {
+    let mailGenerator = new Mailgen({
+        theme: "default",
+        product: {
+            name: "TestEmail",
+            link: "https://linkedin.com"
+        }
+    })
     
 }
 
