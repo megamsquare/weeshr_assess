@@ -28,6 +28,8 @@ async function sendEmail(email:string) {
             link: "https://linkedin.com"
         }
     })
+
+    const response = {}
     
 }
 
