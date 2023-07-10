@@ -22,45 +22,54 @@ async function emailTransport() {
 }
 
 async function sendEmail(mailInfo: SendEmail) {
-    const email = process.env.EMAIL || '';
-    let mailGenerator = new Mailgen({
-        theme: "default",
-        product: {
-            name: "TestEmail",
-            link: "https://linkedin.com"
+    try {
+        const email = process.env.EMAIL || '';
+        let mailGenerator = new Mailgen({
+            theme: "default",
+            product: {
+                name: "TestEmail",
+                link: "https://linkedin.com"
+            }
+        })
+
+        const response = {
+            body: {
+                name: mailInfo.name,
+                intro: mailInfo.intro,
+                outro: mailInfo.outro
+            }
         }
-    })
 
-    const response = {
-        body: {
-            name: mailInfo.name,
-            intro: mailInfo.intro,
-            outro: mailInfo.outro
+        let mail = mailGenerator.generate(response)
+
+        let message = {
+            from: email,
+            to: mailInfo.email,
+            subject: mailInfo.subject,
+            html: mail
         }
-    }
 
-    let mail = mailGenerator.generate(response)
+        const transporter = await emailTransport()
+        if (transporter instanceof Error) {
+            return transporter.message
+        }
 
-    let message = {
-        from: email,
-        to: mailInfo.email,
-        subject: mailInfo.subject,
-        html: mail
-    }
+        let emailTrans = transporter.sendMail(message)
+        console.log('Sent:', JSON.stringify(emailTrans))
+        return emailTrans
+    } catch (error) {
+        return error as Error;
 
-    const transporter = await emailTransport()
-    if (transporter instanceof Error) {
-        return transporter.message
     }
-    
-    transporter.sendMail(message)
 }
 
-async function sendBulkEmail(email:string[]) {
-    
+async function sendBulkEmail(email: string[]) {
+
 }
 
 const EmailService = {
     sendEmail,
     sendBulkEmail
 }
+
+export default EmailService;

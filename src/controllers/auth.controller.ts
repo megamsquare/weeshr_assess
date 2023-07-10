@@ -7,7 +7,7 @@ import { NewRole } from "../use_cases/obj/role.case";
 import { AccessTokenCheck, IsRefresh, LoginInfo } from "../use_cases/obj/auth.case";
 import { UserToken } from "../use_cases/obj/token.case";
 import { SendEmail } from "../use_cases/obj/email.case";
-im
+import SuccessMsg from "../use_cases/success_handler";
 
 async function signUp(req: Request, res: Response) {
     try {
@@ -71,8 +71,11 @@ async function signIn(req: Request, res: Response) {
             }
 
             const sendMail: SendEmail = {
-                name: user.firstName
-
+                name: user.firstName,
+                intro: SuccessMsg.LoginMsg,
+                outro: 'Thank you for chosing us',
+                email: user.email,
+                subject: 'Welcome to our platform!'
             }
 
             if (existingToken !== null && '_id' in existingToken) {
