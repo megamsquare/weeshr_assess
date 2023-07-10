@@ -1,5 +1,6 @@
 import nodeMailer from 'nodemailer';
 import Mailgen from 'mailgen';
+import { SendEmail } from '../use_cases/obj/email.case';
 
 async function emailTransport() {
     const email = process.env.EMAIL || '';
@@ -20,7 +21,7 @@ async function emailTransport() {
     }
 }
 
-async function sendEmail(email:string) {
+async function sendEmail(mailInfo: SendEmail) {
     let mailGenerator = new Mailgen({
         theme: "default",
         product: {
@@ -29,7 +30,15 @@ async function sendEmail(email:string) {
         }
     })
 
-    const response = {}
+    const response = {
+        body: {
+            name: mailInfo.name,
+            intro: mailInfo.intro,
+            outro: mailInfo.outro
+        }
+    }
+
+    let mail = mailGenerator.generate(response)
     
 }
 
