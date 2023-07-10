@@ -6,6 +6,8 @@ import Services from "../services";
 import { NewRole } from "../use_cases/obj/role.case";
 import { AccessTokenCheck, IsRefresh, LoginInfo } from "../use_cases/obj/auth.case";
 import { UserToken } from "../use_cases/obj/token.case";
+import { SendEmail } from "../use_cases/obj/email.case";
+im
 
 async function signUp(req: Request, res: Response) {
     try {
@@ -66,6 +68,11 @@ async function signIn(req: Request, res: Response) {
             if (existingToken instanceof Error) {
                 res.status(status_code.BAD_REQUEST).json({ message: existingToken.message });
                 return;
+            }
+
+            const sendMail: SendEmail = {
+                name: user.firstName
+
             }
 
             if (existingToken !== null && '_id' in existingToken) {
