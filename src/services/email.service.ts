@@ -22,6 +22,7 @@ async function emailTransport() {
 }
 
 async function sendEmail(mailInfo: SendEmail) {
+    const email = process.env.EMAIL || '';
     let mailGenerator = new Mailgen({
         theme: "default",
         product: {
@@ -39,6 +40,11 @@ async function sendEmail(mailInfo: SendEmail) {
     }
 
     let mail = mailGenerator.generate(response)
+
+    let message = {
+        from: email,
+        to: mailInfo.email
+    }
     
 }
 
