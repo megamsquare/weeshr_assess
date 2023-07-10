@@ -43,11 +43,24 @@ async function sendEmail(mailInfo: SendEmail) {
 
     let message = {
         from: email,
-        to: mailInfo.email
+        to: mailInfo.email,
+        subject: mailInfo.subject,
+        html: mail
+    }
+
+    const transporter = await emailTransport()
+    if (transporter instanceof Error) {
+        return transporter.message
     }
     
+    transporter.sendMail(message)
 }
 
 async function sendBulkEmail(email:string[]) {
     
+}
+
+const EmailService = {
+    sendEmail,
+    sendBulkEmail
 }
