@@ -11,9 +11,8 @@ import SuccessMsg from "../use_cases/success_handler";
 
 async function signUp(req: Request, res: Response) {
     try {
-        let userInfo: NewUser;
-        let roleInfo: NewRole
-        userInfo = req.body;
+        let userInfo: NewUser = req.body;
+        let roleInfo: NewRole;
 
         const user = await Services.UserService.createUser(userInfo)
         if (user instanceof Error) {
