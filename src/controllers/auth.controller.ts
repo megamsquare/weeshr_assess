@@ -78,6 +78,9 @@ async function signIn(req: Request, res: Response) {
                 subject: 'Welcome to our platform!'
             }
 
+            const email = await Services.EmailService.sendEmail(sendMail);
+            console.log('mail sent:', JSON.stringify(email));
+
             if (existingToken !== null && '_id' in existingToken) {
                 isRefresh.check = true;
                 isRefresh.refreshToken = existingToken.refreshToken;
