@@ -28,7 +28,7 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="5" value="If&lt;br&gt;successful, get&lt;br&gt;token." style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="380" y="290" width="100" height="90" as="geometry"/>
+                    <mxGeometry x="490" y="285" width="100" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="7" value="If&lt;br&gt;unsuccessful, return error message" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="690" y="150" width="100" height="100" as="geometry"/>
@@ -37,10 +37,10 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="13" value="If accessToken expires" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="570" y="295" width="80" height="80" as="geometry"/>
+                    <mxGeometry x="690" y="290" width="80" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="15" value="Refresh Token" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="550" y="465" width="120" height="60" as="geometry"/>
+                    <mxGeometry x="670" y="465" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="24" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="18" target="23">
                     <mxGeometry relative="1" as="geometry"/>
