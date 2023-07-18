@@ -19,11 +19,23 @@
                 <mxCell id="3" value="Login" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
                     <mxGeometry x="370" y="170" width="120" height="60" as="geometry"/>
                 </mxCell>
+                <mxCell id="14" value="" style="edgeStyle=none;jumpStyle=none;html=1;shadow=1;startArrow=none;startFill=0;" edge="1" parent="1" source="5" target="13">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
                 <mxCell id="5" value="If&lt;br&gt;successful, get&lt;br&gt;token." style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
                     <mxGeometry x="380" y="290" width="100" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="7" value="If&lt;br&gt;unsuccessful, return error message" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
                     <mxGeometry x="180" y="150" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="" style="edgeStyle=none;jumpStyle=none;html=1;shadow=1;startArrow=none;startFill=0;" edge="1" parent="1" source="13" target="15">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="If accessToken expires" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="570" y="295" width="80" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="550" y="465" width="120" height="60" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
