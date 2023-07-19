@@ -37,10 +37,10 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="13" value="If accessToken expires" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="690" y="290" width="80" height="80" as="geometry"/>
+                    <mxGeometry x="700" y="290" width="80" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="15" value="Refresh Token" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="670" y="465" width="120" height="60" as="geometry"/>
+                    <mxGeometry x="680" y="440" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="24" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="18" target="23">
                     <mxGeometry relative="1" as="geometry"/>
