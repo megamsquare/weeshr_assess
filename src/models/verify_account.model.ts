@@ -20,4 +20,11 @@ const VerifyAccountSchema = new mongoose.Schema({
 },
 {
     timestamps: true
-})
+});
+
+const VerifyAccount = mongoose.model(
+    "verifyAccount",
+    VerifyAccountSchema
+);
+
+export default VerifyAccount;
