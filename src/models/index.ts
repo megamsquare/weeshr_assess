@@ -1,11 +1,11 @@
 import User from "./users.model";
 import Roles from "./roles.model";
-import Tokens from "./token.model";
+import Blog from "./blogs.model";
 
 const Model = {
     User,
     Roles,
-    Tokens
+    Blog
 }
 
 export default Model;

@@ -1,45 +1,40 @@
-import Model from "../../../models";
+import { NewRole } from "../../../dto/obj/role.dto";
+import { NewUser } from "../../../dto/obj/user.dto";
+import Services from "../../../services";
 
 const SeedData = async () => {
-    try {
-        const user_model = Model.User;
-        const role_model = Model.Roles;
+  try {
+    let userInfo: NewUser = {
+      username: "user",
+      password: "P@SSw0rd",
+    };
+    let roleInfo: NewRole;
 
-        // Create User
-        const save_user = {
-            firstName: "User",
-            lastName: "User",
-            email: "user@example.com",
-            username: "user",
-            password: "P@SSw0rd",
-            isEmailVerified: true
-        }
-
-        const email_exist = await user_model.exists({ email: save_user.email })
-        if (email_exist) {
-            return
-        }
-
-        const username_exist = await user_model.exists({ email: save_user.username })
-        if (username_exist) {
-            return
-        }
-
-        const user = await user_model.create({...save_user});
-
-        const save_role = {
-            userId: user._id,
-            role: "user",
-        }
-
-        await role_model.create({...save_role})
-
-        console.log("Seed data created successfully");
-
-    } catch (error) {
-        console.log(`Error seeding data: ${error}`);
-        
+    // Create User
+    const user = await Services.UserService.createUser(userInfo);
+    if (user instanceof Error) {
+      console.log(`Seeding encounter error: ${user.message}`);
+      return;
     }
-}
+
+    if ("_id" in user) {
+      const { _id } = user;
+
+      roleInfo = {
+        userId: _id,
+        role: "user",
+      };
+      const role = await Services.RoleService.createRole(roleInfo);
+      if (role instanceof Error) {
+        console.error(role.message);
+      }
+
+      console.log("Seed data created successfully");
+      return;
+    }
+  } catch (error) {
+    console.log(`Error seeding data: ${error}`);
+  }
+};
 
 export default SeedData;
