@@ -7,15 +7,7 @@
     "start": "ts-node index.ts",
     "build": "tsc",
     "dev": "nodemon --exec ts-node index.ts",
-    "test": "jest --detectOpenHandles --config=jest.config.js"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "coveragePathIgnorePatterns": [
-      "/dist/",
-      "/data/",
-      "/mode_modules/"
-    ]
+    "test": "jest --detectOpenHandles --config=jest.config.ts"
   },
   "keywords": [],
   "author": "Michael Mensah",
